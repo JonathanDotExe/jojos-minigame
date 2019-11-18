@@ -3,8 +3,6 @@ package at.jojokobi.minigamesplugin.minigames;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
@@ -12,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
+import at.jojokobi.minigamesplugin.maps.MultiTickTask;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.util.Area;
@@ -28,6 +27,8 @@ public abstract class BaseMinigame implements Minigame {
 	private boolean running = false;
 	private int time = 0;
 	
+	private MultiTickTask task;
+	
 	public BaseMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
 		super();
 		this.generator = generator;
@@ -37,7 +38,10 @@ public abstract class BaseMinigame implements Minigame {
 
 	@Override
 	public void tick() {
-		if (running) {
+		if (task != null && task.hasNext()) {
+			task.next();
+		}
+		else if (running) {
 			update ();
 			//Check end
 			if (canGameFinish()) {
@@ -57,11 +61,7 @@ public abstract class BaseMinigame implements Minigame {
 				scoreboard = null;
 				scoreboardView = null;
 				//Start lobby
-				try {
-					generateArena().get();
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
+				task = generateArena();
 			}
 		}
 		else {
@@ -72,28 +72,26 @@ public abstract class BaseMinigame implements Minigame {
 				running = true;
 				List<Player> players = determinePlayers();
 				//Start game
-				try {
-					generateLobby().get();
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
-				//Init Scoreboard
-				scoreboardView = Bukkit.getScoreboardManager().getNewScoreboard();
-				scoreboard = new CustomScoreboard();
-				for (Player player : players) {
-					scoreboard.addPlayer(player);
-					player.setScoreboard(scoreboardView);
-				}
-				//Create Fields and Teams
-				initScoreboard(scoreboard);
-				//Add players
-				for (Player player : players) {
-					scoreboard.addPlayer(player);
-				}
-				assignTeams(players, scoreboard);
-				//Show scoreboard
-				scoreboard.initScoreboard(scoreboardView);
-				start();
+				task = generateLobby();
+				task.add(() -> {
+					//Init Scoreboard
+					scoreboardView = Bukkit.getScoreboardManager().getNewScoreboard();
+					scoreboard = new CustomScoreboard();
+					for (Player player : players) {
+						scoreboard.addPlayer(player);
+						player.setScoreboard(scoreboardView);
+					}
+					//Create Fields and Teams
+					initScoreboard(scoreboard);
+					//Add players
+					for (Player player : players) {
+						scoreboard.addPlayer(player);
+					}
+					assignTeams(players, scoreboard);
+					//Show scoreboard
+					scoreboard.initScoreboard(scoreboardView);
+					start();
+				});
 			}
 		}
 		//Scoreboard Update
@@ -119,11 +117,11 @@ public abstract class BaseMinigame implements Minigame {
 	
 	public abstract Winner determineWinner ();
 	
-	protected CompletableFuture<Void> generateLobby () {
+	protected MultiTickTask generateLobby () {
 		return lobbyGenerator.generate(gameArea);
 	}
 	
-	protected CompletableFuture<Void> generateArena () {
+	protected MultiTickTask generateArena () {
 		return generator.generate(gameArea);
 	}
 	
@@ -165,6 +163,9 @@ public abstract class BaseMinigame implements Minigame {
 		player.setFoodLevel(20);
 		player.setFireTicks(0);
 		player.setFallDistance(0);
+		player.getInventory().clear();
+		player.setExp(0);
+		player.setLevel(0);
 	}
 
 	public MapGenerator getGenerator() {
