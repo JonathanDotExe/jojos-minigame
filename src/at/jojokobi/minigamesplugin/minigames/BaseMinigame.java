@@ -126,7 +126,7 @@ public abstract class BaseMinigame implements Minigame {
 	}
 	
 	protected List<Player> determinePlayers () {
-		return gameArea.getPlayersInArea();
+		return gameArea.getPos().getWorld().getPlayers();
 	}
 	
 	protected void spreadPlayers (List<Player> players) {

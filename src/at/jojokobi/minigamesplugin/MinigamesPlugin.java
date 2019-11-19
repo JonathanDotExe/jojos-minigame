@@ -1,5 +1,6 @@
 package at.jojokobi.minigamesplugin;
 
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -19,9 +20,10 @@ public class MinigamesPlugin extends JavaPlugin{
 		MinigameHandler handler = new MinigameHandler();
 		WorldCreator generator = new WorldCreator("TeamTroubleWorld");
 		generator.type(WorldType.FLAT);
-		generator.generatorSettings("3;minecraft:air;127;");
+		generator.generatorSettings("{\\\"biome\\\":\\\"minecraft:the_void\\\", \\\"layers\\\":[{\\\"block\\\":\\\"minecraft:air\\\", \\\"height\\\":1}]}");
 		World world = this.getServer().createWorld(generator);
 		world.setSpawnLocation(32, 70, 32);
+		world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
 		handler.add(new TeamTroubleMinigame(new ForestMapGenerator(), new SimpleLobbyGenerator(), new Area(new Location(world, 0, 0, 0), 64, 256,64)));
 	}
 	
