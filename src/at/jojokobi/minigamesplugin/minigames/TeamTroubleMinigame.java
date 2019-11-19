@@ -19,7 +19,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 
 	private int gameDuration = 10 * 60 * 20;
 	private int maxPlayers = 8;
-	private int maxWaitTime = 60 * 20;
+	private int maxWaitTime = 10 * 20;
 	private int protectionTime = 2 * 60 * 20;
 	
 	private GlobalScore<Integer> timerScore;
@@ -37,7 +37,11 @@ public class TeamTroubleMinigame extends BaseMinigame{
 
 	@Override
 	public void update() {
-		
+		if (getTime() == protectionTime && isRunning()) {
+			for (Player player : getScoreboard().getOnlinePlayers()) {
+				player.sendTitle(ChatColor.YELLOW + "The protection time ends now!", "", 10, 80, 10);
+			}
+		}
 	}
 
 	@Override
@@ -61,7 +65,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@Override
 	public boolean canGameStart() {
 		int players = determinePlayers().size();
-		return players >= maxPlayers || (getTime() > maxWaitTime && players >= 2);
+		return players >= maxPlayers || (getTime() > maxWaitTime && players >= 1);
 	}
 
 	@Override
@@ -88,6 +92,11 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		List<Player> players = getScoreboard().getOnlinePlayers();
 		players.sort((p1, p2) -> Integer.compare(playerScore.get(p2), playerScore.get(p1)));
 		return players.isEmpty() ? null : new PlayerWinner(players.get(0), getScoreboard().getTeam(players.get(0)).getColor());
+	}
+
+	@Override
+	public String getName() {
+		return "Team Trouble";
 	}
 
 }

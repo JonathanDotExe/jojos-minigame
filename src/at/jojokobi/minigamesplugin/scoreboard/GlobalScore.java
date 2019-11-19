@@ -47,7 +47,7 @@ public class GlobalScore<T> implements CustomScore<T, Object> {
 
 	@Override
 	public void updateScoreboard(CustomScoreboard cs, Scoreboard scoreboard) {
-		Objective obj = scoreboard.getObjective(name);
+		Objective obj = scoreboard.getObjective(GLOBAL_OBJECTIVE);
 		obj.getScore(name).setScore(Integer.parseInt(value + ""));
 	}
 

@@ -19,12 +19,13 @@ public class CustomScoreboard {
 	private List<CustomScore<?, ?>> scores = new ArrayList<>();
 	private List<UUID> players = new ArrayList<>();
 	private Map<UUID, String> playerTeamAssignments = new HashMap<>();
-
-	public CustomScoreboard() {
-		
+	
+	
+	public CustomScoreboard(String gameName) {
+		super();
+		this.gameName = gameName;
 	}
-	
-	
+
 	public void reset () {
 		teams.clear();
 		scores.clear();
@@ -44,7 +45,8 @@ public class CustomScoreboard {
 		scores.add(score);
 	}
 	
-	public void setTeam (OfflinePlayer player, CustomTeam team) {
+	public void setTeam (OfflinePlayer player, CustomTeam team, Scoreboard scoreboard) {
+		team.addPlayer(player, scoreboard);
 		playerTeamAssignments.put(player.getUniqueId(), team.getName());
 	}
 	
@@ -52,7 +54,8 @@ public class CustomScoreboard {
 		return teams.get(playerTeamAssignments.get(player.getUniqueId()));
 	}
 	
-	public void leaveTeam (OfflinePlayer player) {
+	public void leaveTeam (OfflinePlayer player, Scoreboard scoreboard) {
+		getTeam(player).removePlayer(player, scoreboard);
 		playerTeamAssignments.remove(player.getUniqueId());
 	}
 	

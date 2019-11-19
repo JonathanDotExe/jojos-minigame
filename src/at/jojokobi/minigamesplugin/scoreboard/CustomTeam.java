@@ -1,7 +1,7 @@
 package at.jojokobi.minigamesplugin.scoreboard;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -31,12 +31,12 @@ public class CustomTeam {
 		team.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisible);
 	}
 	
-	public void addPlayer (Player player, Scoreboard scoreboard) {
+	public void addPlayer (OfflinePlayer player, Scoreboard scoreboard) {
 		Team team = scoreboard.getTeam(name);
 		team.addEntry(player.getName());
 	}
 	
-	public void removePlayer (Player player, Scoreboard scoreboard) {
+	public void removePlayer (OfflinePlayer player, Scoreboard scoreboard) {
 		Team team = scoreboard.getTeam(name);
 		team.removeEntry(player.getName());
 	}

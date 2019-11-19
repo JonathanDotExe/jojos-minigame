@@ -31,7 +31,7 @@ public class ForestMapGenerator implements MapGenerator {
 			for (int z = 0; z < area.getLength(); z += 32) {
 				int xPos = x;
 				int zPos = z;
-				task.add(() -> BasicGenUtil.generateCube(area.getPos().clone(), Material.AIR,
+				task.add(() -> BasicGenUtil.generateCube(area.getPos().clone().add(xPos, 0, zPos), Material.AIR,
 						(int) Math.min(32, area.getWidth() - xPos), (int) area.getHeight(),
 						(int) Math.min(32, area.getLength() - zPos)));
 			}
@@ -45,7 +45,7 @@ public class ForestMapGenerator implements MapGenerator {
 				task.add(() -> {
 					int width = (int) Math.min(16, area.getWidth() - xPos);
 					int length = (int) Math.min(16, area.getLength() - zPos);
-					Location place = area.getPos().clone();
+					Location place = area.getPos().clone().add(xPos, 0, zPos);
 					BasicGenUtil.updateBlocks(BasicGenUtil.generateCubeStates(place.clone(), Material.STONE, new OreModifier(random.nextLong()), width, 32, length));
 					place.add(0, 32, 0);
 					//Land Cube
@@ -54,11 +54,11 @@ public class ForestMapGenerator implements MapGenerator {
 					place.add(1, 0, 1);
 					BasicGenUtil.generateCube(place.clone(), Material.STONE, new OreModifier(random.nextLong()), width - 2, height - 4, length - 2);
 					place.add(-1, height - 1, -1);
-					BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, width, height - 1, length);
+					BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, width, 1, length);
 					place.add(0, 1, 0);
 					//Decoration
 					//Trees
-					for (int i = 0; i < 32; i++){
+					for (int i = 0; i < 4; i++){
 						int treeX = random.nextInt(width);
 						int treeZ = random.nextInt(length);
 						place.setX(place.getX() + treeX);
@@ -69,7 +69,7 @@ public class ForestMapGenerator implements MapGenerator {
 						place.setZ(place.getZ() - treeZ);
 					}
 					//Grass
-					TerrainGenUtil.bonemealSpots(place.clone(), width, length, 5, 2, random.nextLong());
+					TerrainGenUtil.bonemealSpots(place.clone(), width, length, 5, 5, random.nextLong());
 				});
 			}
 		}

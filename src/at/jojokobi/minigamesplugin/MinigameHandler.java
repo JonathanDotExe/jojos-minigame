@@ -15,6 +15,7 @@ public class MinigameHandler {
 	public void start (Plugin plugin) {
 		for (Minigame minigame : games) {
 			Bukkit.getPluginManager().registerEvents(minigame, plugin);
+			minigame.init();
 		}
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 			for (Minigame minigame : games) {

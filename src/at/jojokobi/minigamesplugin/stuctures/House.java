@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
-import org.bukkit.inventory.ItemStack;
 
 import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.generation.FurnitureGenUtil;

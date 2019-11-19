@@ -37,6 +37,11 @@ public abstract class BaseMinigame implements Minigame {
 	}
 
 	@Override
+	public void init() {
+		task = generateLobby();
+	}
+	
+	@Override
 	public void tick() {
 		if (task != null && task.hasNext()) {
 			task.next();
@@ -72,11 +77,11 @@ public abstract class BaseMinigame implements Minigame {
 				running = true;
 				List<Player> players = determinePlayers();
 				//Start game
-				task = generateLobby();
+				task = generateArena();
 				task.add(() -> {
 					//Init Scoreboard
 					scoreboardView = Bukkit.getScoreboardManager().getNewScoreboard();
-					scoreboard = new CustomScoreboard();
+					scoreboard = new CustomScoreboard(getName());
 					for (Player player : players) {
 						scoreboard.addPlayer(player);
 						player.setScoreboard(scoreboardView);
@@ -87,9 +92,9 @@ public abstract class BaseMinigame implements Minigame {
 					for (Player player : players) {
 						scoreboard.addPlayer(player);
 					}
-					assignTeams(players, scoreboard);
 					//Show scoreboard
 					scoreboard.initScoreboard(scoreboardView);
+					assignTeams(players, scoreboard, scoreboardView);
 					start();
 				});
 			}
@@ -142,12 +147,12 @@ public abstract class BaseMinigame implements Minigame {
 		}
 	}
 	
-	protected void assignTeams (List<Player> players, CustomScoreboard board) {
+	protected void assignTeams (List<Player> players, CustomScoreboard board, Scoreboard scoreboardView) {
 		List<CustomTeam> teams = board.getTeamList();
 		if (teams.size() > 0) {
 			Iterator<CustomTeam> iter = teams.iterator();
 			for (Player player: players) {
-				board.setTeam(player, iter.next());
+				board.setTeam(player, iter.next(), scoreboardView);
 				if (!iter.hasNext()) {
 					iter = teams.iterator();
 				}
@@ -191,5 +196,7 @@ public abstract class BaseMinigame implements Minigame {
 	public CustomScoreboard getScoreboard() {
 		return scoreboard;
 	}
+	
+	public abstract String getName ();
 	
 }

@@ -19,6 +19,7 @@ public class MultiTickTask {
 	}
 	
 	public void next () {
+		System.out.println("Executing task");
 		if (iter == null) {
 			iter = tasks.iterator();
 		}

@@ -17,7 +17,7 @@ public class SimpleLobbyGenerator implements MapGenerator{
 			for (int z = 0; z < area.getLength(); z+=32) {
 				int xPos = x;
 				int zPos = z;
-				task.add(() ->BasicGenUtil.generateCube(area.getPos().clone(), Material.AIR, (int) Math.min(32, area.getWidth() - xPos), (int)area.getHeight(), (int) Math.min(32, area.getLength() - zPos)));
+				task.add(() ->BasicGenUtil.generateCube(area.getPos().clone().add(xPos, 0, zPos), Material.AIR, (int) Math.min(32, area.getWidth() - xPos), (int)area.getHeight(), (int) Math.min(32, area.getLength() - zPos)));
 			}
 		}
 		//Stone Cube
@@ -25,7 +25,7 @@ public class SimpleLobbyGenerator implements MapGenerator{
 			for (int z = 0; z < area.getLength(); z+=32) {
 				int xPos = x;
 				int zPos = z;
-				task.add(() ->BasicGenUtil.generateCube(area.getPos().clone(), Material.STONE, (int) Math.min(32, area.getWidth() - xPos), 64, (int) Math.min(32, area.getLength() - zPos)));
+				task.add(() ->BasicGenUtil.generateCube(area.getPos().clone().add(xPos, 0, zPos), Material.STONE, (int) Math.min(32, area.getWidth() - xPos), 64, (int) Math.min(32, area.getLength() - zPos)));
 			}
 		}
 		task.add(() -> {
