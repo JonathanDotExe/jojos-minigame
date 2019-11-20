@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 import at.jojokobi.mcutil.generation.population.OreModifier;
+import at.jojokobi.minigamesplugin.stuctures.House;
 import at.jojokobi.minigamesplugin.util.Area;
 
 public class ForestMapGenerator implements MapGenerator {
@@ -73,6 +74,17 @@ public class ForestMapGenerator implements MapGenerator {
 				});
 			}
 		}
+		
+		//Generate Houses
+		task.add(() -> {
+			House house = new House(Material.OAK_PLANKS, Material.COBBLESTONE);
+			for (int i = 0; i <8; i++){
+				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
+				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
+				loc.setY(y);
+				house.generate(loc, random);
+			}
+		});
 		
 		//Clear world
 		task.add(() -> {
