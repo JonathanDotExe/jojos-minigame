@@ -20,7 +20,7 @@ public class House implements GameStructure {
 	private LootInventory loot = new LootInventory();
 	
 
-	public House(Material block1, Material block2) {
+	public House(Material block1, Material block2, LootItem... items) {
 		super();
 		this.block1 = block1;
 		this.block2 = block2;
@@ -47,6 +47,10 @@ public class House implements GameStructure {
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.GOLDEN_HOE), 1, 1).setEnchant(true));
 		
 		loot.addItem(new LootItem(1, new ItemStack(Material.WITHER_SKELETON_SKULL), 0, 4));
+		
+		for (LootItem item : items) {
+			loot.addItem(item);
+		}
 		//loot.addItem(new LootItem(1, new ItemStack(Material.FIRE_CHARGE), 0, 4));
 
 		

@@ -1,11 +1,13 @@
 package at.jojokobi.minigamesplugin.minigames;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
@@ -19,11 +21,14 @@ public class TeamTroubleMinigame extends BaseMinigame{
 
 	private int gameDuration = 10 * 60 * 20;
 	private int maxPlayers = 8;
-	private int maxWaitTime = 10 * 20;
+	private int maxWaitTime = 20 * 20;
 	private int protectionTime = 2 * 60 * 20;
 	
 	private GlobalScore<Integer> timerScore;
 	private PlayerScore playerScore;
+	
+	private CustomTeam redTeam;
+	private CustomTeam blueTeam;
 
 	
 	public TeamTroubleMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
@@ -32,15 +37,14 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	
 	@Override
 	public void start() {
-		spreadPlayers(getScoreboard().getOnlinePlayers());
+		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 	}
 
 	@Override
 	public void update() {
 		if (getTime() == protectionTime && isRunning()) {
-			for (Player player : getScoreboard().getOnlinePlayers()) {
-				player.sendTitle(ChatColor.YELLOW + "The protection time ends now!", "", 10, 80, 10);
-			}
+			sendGameTitle(ChatColor.YELLOW + "The protection time ends now!", "", 10, 80, 10);
+			timerScore.set(getTime());
 		}
 	}
 
@@ -52,15 +56,12 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@Override
 	public void end() {
 		
-		spreadPlayers(getScoreboard().getOnlinePlayers());
 	}
 
 	@Override
 	public boolean canGameFinish() {
-		return getTime() >= protectionTime && (getTime() >= gameDuration || getScoreboard().getPlayers().isEmpty() || getScoreboard().getPlayers().stream().allMatch(p -> getScoreboard().getTeam(p) == getScoreboard().getTeam(getScoreboard().getPlayers().get(0))));
+		return getTime() >= protectionTime + 60 * 20 && (getTime() >= gameDuration || getScoreboard().getPlayers().isEmpty() || getScoreboard().getPlayers().stream().allMatch(p -> getScoreboard().getTeam(p) == getScoreboard().getTeam(getScoreboard().getPlayers().get(0))));
 	}
-	
-
 
 	@Override
 	public boolean canGameStart() {
@@ -76,20 +77,53 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		scoreboard.addScore(timerScore);
 		scoreboard.addScore(playerScore);
 		//Teams
-		scoreboard.addTeam(new CustomTeam(ChatColor.RED, "team_red", "Team Red", true, true));
-		scoreboard.addTeam(new CustomTeam(ChatColor.BLUE, "team_blue", "Team Blue", true, true));
+		scoreboard.addTeam(redTeam = new CustomTeam(ChatColor.RED, "team_red", "Team Red", true, true));
+		scoreboard.addTeam(blueTeam = new CustomTeam(ChatColor.BLUE, "team_blue", "Team Blue", true, true));
 	}
 	
 	@EventHandler
 	public void onEntityDamage (EntityDamageEvent event) {
-		if (getScoreboard().getOnlinePlayers().contains(event.getEntity()) && (!isRunning() || getTime() < protectionTime)) {
-			event.setCancelled(true);
+		if (getScoreboard() != null && getScoreboard().getOnlinePlayers().contains(event.getEntity())) {
+			//Prevent damage in protection time
+			if (!isRunning() || getTime() < protectionTime) {
+				event.setDamage(0);
+			}
+			else if (event.getEntity() instanceof Player){
+				Player player = (Player) event.getEntity();
+				if (player.getHealth() - event.getFinalDamage() <= 0.5) {
+					CustomTeam newTeam;
+					//Switch team
+					if (getScoreboard().getTeam(player) ==  blueTeam) {
+						newTeam = redTeam;
+					}
+					else {
+						newTeam = blueTeam;
+					}
+					setTeam(player, newTeam);
+					sendGameTitle(newTeam.getColor() + player.getName() + " is now in " + newTeam.getDisplayName() + "!", "", 10, 80, 10);
+					event.setDamage(0);
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerJoin (PlayerJoinEvent event) {
+		if (event.getPlayer().getWorld() == getGameArea().getPos().getWorld()) {
+			spreadPlayers(Arrays.asList(event.getPlayer()), getGameArea());
+		}
+	}
+	
+	private void sendGameTitle (String title, String subtitle, int fadeIn, int duration, int fadeOut) {
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendTitle(title, subtitle, fadeIn, duration, fadeOut);
 		}
 	}
 
 	@Override
 	public Winner determineWinner() {
 		List<Player> players = getScoreboard().getOnlinePlayers();
+		System.out.println(players);
 		players.sort((p1, p2) -> Integer.compare(playerScore.get(p2), playerScore.get(p1)));
 		return players.isEmpty() ? null : new PlayerWinner(players.get(0), getScoreboard().getTeam(players.get(0)).getColor());
 	}
@@ -97,6 +131,11 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@Override
 	public String getName() {
 		return "Team Trouble";
+	}
+
+	@Override
+	public void startLobby() {
+		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 	}
 
 }

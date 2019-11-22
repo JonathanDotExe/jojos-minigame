@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-public class PlayerScore implements CustomScore<Integer, Player> {
+public class PlayerScore implements CustomScore<Integer, OfflinePlayer> {
 	
 	private Map<UUID, Integer> values = new HashMap<>();
 	private String name;
@@ -26,12 +26,12 @@ public class PlayerScore implements CustomScore<Integer, Player> {
 	}
 
 	@Override
-	public Integer get(Player e) {
+	public Integer get(OfflinePlayer e) {
 		return values.get(e.getUniqueId());
 	}
 
 	@Override
-	public void set(Integer t, Player e) {
+	public void set(Integer t, OfflinePlayer e) {
 		values.put(e.getUniqueId(), t);
 	}
 
@@ -44,6 +44,9 @@ public class PlayerScore implements CustomScore<Integer, Player> {
 	public void initScoreboard(CustomScoreboard cs, Scoreboard scoreboard) {
 		Objective obj = scoreboard.registerNewObjective(name, "dummy", displayName);
 		obj.setDisplaySlot(slot);
+		for (OfflinePlayer player : cs.getPlayers()) {
+			set(0, player);
+		}
 	}
 
 	@Override

@@ -25,5 +25,11 @@ public class MultiTickTask {
 		}
 		iter.next().run();
 	}
+	
+	public void executeAll () {
+		while (hasNext()) {
+			next();
+		}
+	}
 
 }

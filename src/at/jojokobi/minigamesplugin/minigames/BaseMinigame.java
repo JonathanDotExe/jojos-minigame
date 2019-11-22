@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -29,6 +30,8 @@ public abstract class BaseMinigame implements Minigame {
 	
 	private MultiTickTask task;
 	
+	
+
 	public BaseMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
 		super();
 		this.generator = generator;
@@ -50,7 +53,7 @@ public abstract class BaseMinigame implements Minigame {
 			update ();
 			//Check end
 			if (canGameFinish()) {
-				//Detrmine winner
+				//Determine winner
 				Winner winner = determineWinner();
 				if (winner != null) {
 					for (Player player : scoreboard.getOnlinePlayers()) {
@@ -58,15 +61,19 @@ public abstract class BaseMinigame implements Minigame {
 					}
 				}
 				end();
-				time = 0;
-				running = false;
-				for (Player player : scoreboard.getOnlinePlayers()) {
-					player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-				}
-				scoreboard = null;
-				scoreboardView = null;
 				//Start lobby
-				task = generateArena();
+				task = generateLobby();
+				task.add(() -> {
+					startLobby();
+					time = 0;
+					running = false;
+					for (Player player : scoreboard.getOnlinePlayers()) {
+						player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+					}
+					scoreboard = null;
+					scoreboardView = null;
+				});
+				task.executeAll();
 			}
 		}
 		else {
@@ -97,6 +104,7 @@ public abstract class BaseMinigame implements Minigame {
 					assignTeams(players, scoreboard, scoreboardView);
 					start();
 				});
+				task.executeAll();
 			}
 		}
 		//Scoreboard Update
@@ -114,6 +122,8 @@ public abstract class BaseMinigame implements Minigame {
 	
 	public abstract void end ();
 	
+	public abstract void startLobby ();
+	
 	public abstract boolean canGameFinish ();
 	
 	public abstract boolean canGameStart ();
@@ -121,6 +131,14 @@ public abstract class BaseMinigame implements Minigame {
 	public abstract void initScoreboard (CustomScoreboard scoreboard);
 	
 	public abstract Winner determineWinner ();
+	
+	protected void setTeam (OfflinePlayer player, CustomTeam team) {
+		scoreboard.setTeam(player, team, scoreboardView);
+	}
+	
+	protected void leaveTeam (OfflinePlayer player) {
+		scoreboard.leaveTeam(player, scoreboardView);
+	}
 	
 	protected MultiTickTask generateLobby () {
 		return lobbyGenerator.generate(gameArea);
@@ -134,7 +152,7 @@ public abstract class BaseMinigame implements Minigame {
 		return gameArea.getPos().getWorld().getPlayers();
 	}
 	
-	protected void spreadPlayers (List<Player> players) {
+	protected void spreadPlayers (List<Player> players, Area gameArea) {
 		Random random = new Random();
 		for (Player player : players) {
 			player.teleport(gameArea.getPos().clone().add(random.nextDouble() * gameArea.getWidth(), gameArea.getPos().getWorld().getMaxHeight() - gameArea.getPos().getY(), random.nextDouble() * gameArea.getLength()));
@@ -196,7 +214,7 @@ public abstract class BaseMinigame implements Minigame {
 	public CustomScoreboard getScoreboard() {
 		return scoreboard;
 	}
-	
+
 	public abstract String getName ();
 	
 }

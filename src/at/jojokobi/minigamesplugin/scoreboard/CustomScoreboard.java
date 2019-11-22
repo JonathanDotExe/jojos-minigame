@@ -46,6 +46,7 @@ public class CustomScoreboard {
 	}
 	
 	public void setTeam (OfflinePlayer player, CustomTeam team, Scoreboard scoreboard) {
+		leaveTeam(player, scoreboard);
 		team.addPlayer(player, scoreboard);
 		playerTeamAssignments.put(player.getUniqueId(), team.getName());
 	}
@@ -55,7 +56,9 @@ public class CustomScoreboard {
 	}
 	
 	public void leaveTeam (OfflinePlayer player, Scoreboard scoreboard) {
-		getTeam(player).removePlayer(player, scoreboard);
+		if (getTeam(player) != null) {
+			getTeam(player).removePlayer(player, scoreboard);
+		}
 		playerTeamAssignments.remove(player.getUniqueId());
 	}
 	
@@ -77,7 +80,14 @@ public class CustomScoreboard {
 	}
 	
 	public List<Player> getOnlinePlayers () {
-		return Arrays.asList(players.stream().map(u -> Bukkit.getPlayer(u)).filter(p -> p != null).toArray(Player[]::new));
+		List<Player> players = new ArrayList<Player>();
+		for (UUID id : this.players) {
+			Player player = Bukkit.getPlayer(id);
+			if (player != null) {
+				players.add(player);
+			}
+		}
+		return players;
 	}
 
 	public String getGameName () {
