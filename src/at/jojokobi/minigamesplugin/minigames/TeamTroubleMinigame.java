@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
@@ -33,6 +34,12 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	
 	public TeamTroubleMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
 		super(generator, lobbyGenerator, gameArea);
+	}
+	
+	@Override
+	public void init(Plugin plugin) {
+		addComponent(new ClimbComponent());
+		super.init(plugin);
 	}
 	
 	@Override

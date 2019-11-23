@@ -1,13 +1,18 @@
 package at.jojokobi.minigamesplugin.minigames;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
@@ -29,6 +34,7 @@ public abstract class BaseMinigame implements Minigame {
 	private int time = 0;
 	
 	private MultiTickTask task;
+	private List<GameComponent> components = new ArrayList<GameComponent>();
 	
 	
 
@@ -40,8 +46,12 @@ public abstract class BaseMinigame implements Minigame {
 	}
 
 	@Override
-	public void init() {
+	public void init(Plugin plugin) {
+		for (GameComponent gameComponent : components) {
+			Bukkit.getPluginManager().registerEvents(gameComponent, plugin);
+		}
 		task = generateLobby();
+		task.executeAll();
 	}
 	
 	@Override
@@ -132,6 +142,17 @@ public abstract class BaseMinigame implements Minigame {
 	
 	public abstract Winner determineWinner ();
 	
+	@EventHandler
+	public void onPlayerMove (PlayerMoveEvent event) {
+		Location to = event.getTo();
+		if (to.getY() < 0){
+			Random random = new Random();
+			Location place = new Location(to.getWorld(), random.nextInt(60) - 30, 100, random.nextInt(60) - 30);
+			place.setY(place.getWorld().getHighestBlockYAt(place) + 1);
+			event.setTo(place);
+		}
+	}
+	
 	protected void setTeam (OfflinePlayer player, CustomTeam team) {
 		scoreboard.setTeam(player, team, scoreboardView);
 	}
@@ -216,5 +237,9 @@ public abstract class BaseMinigame implements Minigame {
 	}
 
 	public abstract String getName ();
+	
+	protected void addComponent (GameComponent comp) {
+		components.add(comp);
+	}
 	
 }
