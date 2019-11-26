@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 import at.jojokobi.minigamesplugin.minigames.GameComponent;
 
-public class WitherSkullGun implements GameComponent{
+public class WitherSkullGunComponent implements GameComponent{
 	
 	private World world;
 	
@@ -31,7 +31,9 @@ public class WitherSkullGun implements GameComponent{
 				WitherSkull skull = player.launchProjectile(WitherSkull.class);
 				skull.setVelocity(skull.getVelocity().multiply(10));
 				skull.setYield(10.0f);
-				skull.setCharged(true);
+				if (!item.getEnchantments().isEmpty()) {
+					skull.setCharged(true);
+				}
 				ItemMeta damageable = item.getItemMeta();
 				skullItem.setAmount(skullItem.getAmount() - 1);
 				((Damageable) damageable).setDamage(((Damageable) damageable).getDamage() - 5);

@@ -12,8 +12,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
-import at.jojokobi.minigamesplugin.items.SpectralArrow;
-import at.jojokobi.minigamesplugin.items.WitherSkullGun;
+import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
+import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
@@ -43,8 +43,8 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	
 	@Override
 	public void init(Plugin plugin) {
-		addComponent(new SpectralArrow());
-		addComponent(new WitherSkullGun());
+		addComponent(new SpectralArrowComponent());
+		addComponent(new WitherSkullGunComponent());
 		addComponent(new ClimbComponent());
 		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
@@ -145,7 +145,13 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@EventHandler
 	public void onPlayerJoin (PlayerJoinEvent event) {
 		if (event.getPlayer().getWorld() == getGameArea().getPos().getWorld()) {
-			spreadPlayers(Arrays.asList(event.getPlayer()), getGameArea());
+			if (!isRunning()) {
+				spreadPlayers(Arrays.asList(event.getPlayer()), getGameArea());
+				resetPlayer(event.getPlayer());
+			}
+			else {
+				event.getPlayer().kickPlayer("Sorry a round of Team Trouble is already running!");
+			}
 		}
 	}
 	

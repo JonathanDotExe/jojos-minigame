@@ -19,12 +19,8 @@ public class House implements GameStructure {
 	private Material block2 = Material.AIR;
 	private LootInventory loot = new LootInventory();
 	
-
-	public House(Material block1, Material block2, LootItem... items) {
-		super();
-		this.block1 = block1;
-		this.block2 = block2;
-		loot.addItem(new LootItem(1, new ItemStack(Material.DARK_OAK_LOG), 0, 8));
+	public static void generateLootInventory (LootInventory loot) {
+		loot.addItem(new LootItem(1, new ItemStack(Material.OAK_LOG), 0, 8));
 		loot.addItem(new LootItem(1, new ItemStack(Material.STRING), 0, 4));
 		loot.addItem(new LootItem(1, new ItemStack(Material.STICK), 0, 16));
 		loot.addItem(new LootItem(1, new ItemStack(Material.OAK_PLANKS), 0, 32));
@@ -34,11 +30,13 @@ public class House implements GameStructure {
 		//loot.addItem(new LootItem(1, new ItemStack(Material.RABBIT_FOOT), 0, 3));
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.BOW), 1, 1).setEnchant(true).setDamage(false));
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.IRON_SWORD), 1, 1).setEnchant(true).setDamage(false));
+		loot.addItem(new LootItem(0.25, new ItemStack(Material.IRON_AXE), 1, 1).setEnchant(true).setDamage(false));
+		loot.addItem(new LootItem(0.5, new ItemStack(Material.SHIELD), 1, 1).setEnchant(true).setDamage(false));
 		loot.addItem(new LootItem(0.5, new ItemStack(Material.STONE_SWORD), 1, 1).setEnchant(true).setDamage(false));
 		loot.addItem(new LootItem(0.1, new ItemStack(Material.IRON_INGOT), 0, 5));
 		loot.addItem(new LootItem(0.1, new ItemStack(Material.CARROT), 0, 6));
 		loot.addItem(new LootItem(0.1, new ItemStack(Material.IRON_INGOT), 0, 5));
-		loot.addItem(new LootItem(0.1, new ItemStack(Material.BAKED_POTATO), 0, 4));
+		loot.addItem(new LootItem(0.1, new ItemStack(Material.BAKED_POTATO), 0, 6));
 		
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.CHAINMAIL_CHESTPLATE), 1, 1).setEnchant(true).setDamage(false));
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.CHAINMAIL_LEGGINGS), 1, 1).setEnchant(true).setDamage(false));
@@ -46,7 +44,18 @@ public class House implements GameStructure {
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.CHAINMAIL_HELMET), 1, 1).setEnchant(true).setDamage(false));
 		loot.addItem(new LootItem(0.25, new ItemStack(Material.GOLDEN_HOE), 1, 1).setEnchant(true).setDamage(false));
 		
+		loot.addItem(new LootItem(1, new ItemStack(Material.COOKED_BEEF), 0, 4));
+		
 		loot.addItem(new LootItem(1, new ItemStack(Material.WITHER_SKELETON_SKULL), 0, 4));
+		loot.addItem(new LootItem(0.5, new ItemStack(Material.SPECTRAL_ARROW), 0, 6));
+	}
+
+	public House(Material block1, Material block2, LootItem... items) {
+		super();
+		this.block1 = block1;
+		this.block2 = block2;
+		
+		generateLootInventory(loot);
 		
 		for (LootItem item : items) {
 			loot.addItem(item);

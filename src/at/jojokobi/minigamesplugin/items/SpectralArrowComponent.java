@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity;
 import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 import at.jojokobi.minigamesplugin.minigames.GameComponent;
 
-public class SpectralArrow implements GameComponent {
+public class SpectralArrowComponent implements GameComponent {
 	
 	private World world;
 

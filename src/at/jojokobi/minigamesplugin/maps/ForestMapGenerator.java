@@ -13,6 +13,7 @@ import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 import at.jojokobi.mcutil.generation.population.OreModifier;
 import at.jojokobi.mcutil.loot.LootItem;
+import at.jojokobi.minigamesplugin.stuctures.DungeonTower;
 import at.jojokobi.minigamesplugin.stuctures.House;
 import at.jojokobi.minigamesplugin.stuctures.HouseTower;
 import at.jojokobi.minigamesplugin.util.Area;
@@ -89,6 +90,16 @@ public class ForestMapGenerator implements MapGenerator {
 		//Generate House towers
 		task.add(() -> {
 			HouseTower house = new HouseTower(Material.OAK_PLANKS, Material.RED_SANDSTONE, 12, new LootItem(1, new ItemStack(Material.RABBIT_FOOT), 0, 2));
+			for (int i = 0; i <4 ; i++){
+				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
+				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
+				loc.setY(y);
+				house.generate(loc, random);
+			}
+		});
+		//Generate Dungeon Towers
+		task.add(() -> {
+			DungeonTower house = new DungeonTower(Material.COBBLESTONE, Material.MOSSY_COBBLESTONE, 12);
 			for (int i = 0; i <4 ; i++){
 				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
 				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
