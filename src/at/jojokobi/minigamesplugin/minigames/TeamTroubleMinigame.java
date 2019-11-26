@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -11,6 +12,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
+import at.jojokobi.minigamesplugin.items.SpectralArrow;
+import at.jojokobi.minigamesplugin.items.WitherSkullGun;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
@@ -30,6 +33,8 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	
 	private CustomTeam redTeam;
 	private CustomTeam blueTeam;
+	
+	private DamageScoreComponent damageScoreComponent;
 
 	
 	public TeamTroubleMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
@@ -38,21 +43,25 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	
 	@Override
 	public void init(Plugin plugin) {
+		addComponent(new SpectralArrow());
+		addComponent(new WitherSkullGun());
 		addComponent(new ClimbComponent());
+		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
 	}
 	
 	@Override
 	public void start() {
 		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
+		resetPlayers(getScoreboard().getOnlinePlayers());
 	}
 
 	@Override
 	public void update() {
 		if (getTime() == protectionTime && isRunning()) {
 			sendGameTitle(ChatColor.YELLOW + "The protection time ends now!", "", 10, 80, 10);
-			timerScore.set(getTime());
 		}
+		timerScore.set(getTime()/20);
 	}
 
 	@Override
@@ -83,6 +92,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		playerScore = new PlayerScore("score", "Score", DisplaySlot.PLAYER_LIST);
 		scoreboard.addScore(timerScore);
 		scoreboard.addScore(playerScore);
+		damageScoreComponent.setScore(playerScore);
 		//Teams
 		scoreboard.addTeam(redTeam = new CustomTeam(ChatColor.RED, "team_red", "Team Red", true, true));
 		scoreboard.addTeam(blueTeam = new CustomTeam(ChatColor.BLUE, "team_blue", "Team Blue", true, true));
@@ -90,12 +100,12 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	
 	@EventHandler
 	public void onEntityDamage (EntityDamageEvent event) {
-		if (getScoreboard() != null && getScoreboard().getOnlinePlayers().contains(event.getEntity())) {
+		if (getGameArea().getPos().getWorld().getPlayers().contains(event.getEntity())) {
 			//Prevent damage in protection time
 			if (!isRunning() || getTime() < protectionTime) {
 				event.setDamage(0);
 			}
-			else if (event.getEntity() instanceof Player){
+			else if (event.getEntity() instanceof Player && getScoreboard() != null && getScoreboard().getOnlinePlayers().contains(event.getEntity())){
 				Player player = (Player) event.getEntity();
 				if (player.getHealth() - event.getFinalDamage() <= 0.5) {
 					CustomTeam newTeam;
@@ -106,12 +116,30 @@ public class TeamTroubleMinigame extends BaseMinigame{
 					else {
 						newTeam = blueTeam;
 					}
+					//Lose Points
+					int newScore = Math.max(0, playerScore.get(player) - Math.max(playerScore.get(player), 50));
+					int teamMax = getMaxScoreOfTeam(newTeam) - 50;
+					if (newScore > teamMax) {
+						newScore = teamMax;
+					}
+					
 					setTeam(player, newTeam);
+					playerScore.set(newScore, player);
 					sendGameTitle(newTeam.getColor() + player.getName() + " is now in " + newTeam.getDisplayName() + "!", "", 10, 80, 10);
 					event.setDamage(0);
 				}
 			}
 		}
+	}
+	
+	private int getMaxScoreOfTeam (CustomTeam team) {
+		int max = 0;
+		for (OfflinePlayer player : getScoreboard().getPlayersInTeam(team)) {
+			if (playerScore.get(player) > max) {
+				max = playerScore.get(player);
+			}
+		}
+		return max;
 	}
 	
 	@EventHandler

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -12,11 +13,13 @@ import org.bukkit.util.Vector;
 
 public class ClimbComponent implements GameComponent {
 	
+	private World world;
+	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
 		Player player = event.getPlayer();
 		Location to = event.getTo();
-		if (player.isSneaking()){
+		if (player.isSneaking() && to.getWorld() == world){
 			Location to1 = to.clone();
 			to1.setX(to1.getX() + 0.5);
 			Location to2 = to.clone();
@@ -78,6 +81,11 @@ public class ClimbComponent implements GameComponent {
 	public void startLobby() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void init(BaseMinigame game) {
+		this.world = game.getGameArea().getPos().getWorld();
 	}
 
 }

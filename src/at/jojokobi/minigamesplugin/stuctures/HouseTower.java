@@ -13,17 +13,19 @@ import at.jojokobi.mcutil.generation.FurnitureGenUtil;
 import at.jojokobi.mcutil.loot.LootInventory;
 import at.jojokobi.mcutil.loot.LootItem;
 
-public class House implements GameStructure {
+public class HouseTower implements GameStructure {
 	
 	private Material block1 = Material.AIR;
 	private Material block2 = Material.AIR;
+	private int maxFloors;
 	private LootInventory loot = new LootInventory();
 	
 
-	public House(Material block1, Material block2, LootItem... items) {
+	public HouseTower(Material block1, Material block2, int maxFloors, LootItem... items) {
 		super();
 		this.block1 = block1;
 		this.block2 = block2;
+		this.maxFloors = maxFloors;
 		loot.addItem(new LootItem(1, new ItemStack(Material.DARK_OAK_LOG), 0, 8));
 		loot.addItem(new LootItem(1, new ItemStack(Material.STRING), 0, 4));
 		loot.addItem(new LootItem(1, new ItemStack(Material.STICK), 0, 16));
@@ -63,28 +65,35 @@ public class House implements GameStructure {
 	@Override
 	public void generate(Location loc, Random random) {
 		Location place = loc.clone();
-		//Floor
-		BasicGenUtil.generateCube(place.clone(), block2, 6, 1, 6);
-		place.setY(place.getY() + 1);
-		//Room
-		BasicGenUtil.generateCube(place.clone(), block1, 6, 3, 6);
-		place.setX(place.getX() + 1);
-		place.setZ(place.getZ() + 1);
-		BasicGenUtil.generateCube(place.clone(), Material.AIR, 4, 3, 4);
-		place.setX(place.getX() + 2);
-		//Funiture
-		place.getBlock().setType(Material.CHEST);
-		loot.fillInventory(((Chest) place.getBlock().getState()).getBlockInventory(), random, null);
-		place.setX(place.getX() + 1);
-		place.getBlock().setType(Material.CRAFTING_TABLE);
-		place.setY(place.getY() + 1);
-		place.getBlock().setType(Material.TORCH);
-		place.setY(place.getY() - 1);
-		place.setX(place.getX() - 4);
-		FurnitureGenUtil.generateDoor(place.clone(), Material.OAK_DOOR, BlockFace.NORTH, false);
-		place.setZ(place.getZ() - 1);
-		place.setY(place.getY() + 3);
-		BasicGenUtil.generateCube(place.clone(), block2, 6, 1, 6);
+		int floors = random.nextInt(maxFloors) + 1;
+		for (int i = 0; i < floors; i++){
+			//Floor
+			BasicGenUtil.generateCube(place.clone(), block2, 8, 1, 8);
+			place.setY(place.getY() + 1);
+			//Room
+			BasicGenUtil.generateCube(place.clone(), block1, 8, 6, 8);
+			place.setX(place.getX() + 1);
+			place.setZ(place.getZ() + 1);
+			BasicGenUtil.generateCube(place.clone(), Material.AIR, 6, 6, 6);
+			place.setX(place.getX() + 4);
+			place.getBlock().setType(Material.CHEST);
+			loot.fillInventory(((Chest) place.getBlock().getState()).getBlockInventory(), random, null);
+			place.setX(place.getX() + 1);
+			place.getBlock().setType(Material.CRAFTING_TABLE);
+			place.setY(place.getY() + 1);
+			place.getBlock().setType(Material.TORCH);
+			place.setY(place.getY() - 1);
+			place.setX(place.getX() - 6);
+			if (i == 0){
+				FurnitureGenUtil.generateDoor(place.clone(), Material.OAK_DOOR, BlockFace.NORTH, false);
+			}
+			else{
+				BasicGenUtil.generateCube(place.clone(), Material.GLASS_PANE, 1, 4, 6);
+			}
+			place.setZ(place.getZ() - 1);
+			place.setY(place.getY() + 5);
+			BasicGenUtil.generateCube(place.clone(), block2, 8, 1, 8);
+		}
 	}
 
 }

@@ -3,6 +3,8 @@ package at.jojokobi.minigamesplugin.minigames;
 import org.bukkit.event.Listener;
 
 public interface GameComponent extends Listener{
+	
+	public void init (BaseMinigame game);
 
 	public abstract void start ();
 	

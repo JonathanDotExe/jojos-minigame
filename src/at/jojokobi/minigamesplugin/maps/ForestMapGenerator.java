@@ -7,11 +7,14 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 
 import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.generation.TerrainGenUtil;
 import at.jojokobi.mcutil.generation.population.OreModifier;
+import at.jojokobi.mcutil.loot.LootItem;
 import at.jojokobi.minigamesplugin.stuctures.House;
+import at.jojokobi.minigamesplugin.stuctures.HouseTower;
 import at.jojokobi.minigamesplugin.util.Area;
 
 public class ForestMapGenerator implements MapGenerator {
@@ -45,7 +48,7 @@ public class ForestMapGenerator implements MapGenerator {
 					int width = (int) Math.min(16, area.getWidth() - xPos);
 					int length = (int) Math.min(16, area.getLength() - zPos);
 					Location place = area.getPos().clone().add(xPos, 0, zPos);
-					BasicGenUtil.updateBlocks(BasicGenUtil.generateCubeStates(place.clone(), Material.STONE, new OreModifier(random.nextLong()), width, 32, length));
+					BasicGenUtil.generateCube(place.clone(), Material.STONE, new OreModifier(random.nextLong()), width, 32, length);
 					place.add(0, 32, 0);
 					//Land Cube
 					int height = 4 + random.nextInt(64);
@@ -75,8 +78,18 @@ public class ForestMapGenerator implements MapGenerator {
 		
 		//Generate Houses
 		task.add(() -> {
-			House house = new House(Material.OAK_PLANKS, Material.COBBLESTONE);
+			House house = new House(Material.OAK_PLANKS, Material.COBBLESTONE, new LootItem(1, new ItemStack(Material.RABBIT_FOOT), 0, 2));
 			for (int i = 0; i <8; i++){
+				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
+				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
+				loc.setY(y);
+				house.generate(loc, random);
+			}
+		});
+		//Generate House towers
+		task.add(() -> {
+			HouseTower house = new HouseTower(Material.OAK_PLANKS, Material.RED_SANDSTONE, 12, new LootItem(1, new ItemStack(Material.RABBIT_FOOT), 0, 2));
+			for (int i = 0; i <4 ; i++){
 				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
 				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
 				loc.setY(y);

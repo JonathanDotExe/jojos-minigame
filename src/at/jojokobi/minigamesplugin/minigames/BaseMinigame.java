@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
@@ -48,6 +49,7 @@ public abstract class BaseMinigame implements Minigame {
 	@Override
 	public void init(Plugin plugin) {
 		for (GameComponent gameComponent : components) {
+			gameComponent.init(this);
 			Bukkit.getPluginManager().registerEvents(gameComponent, plugin);
 		}
 		task = generateLobby();
@@ -61,6 +63,7 @@ public abstract class BaseMinigame implements Minigame {
 		}
 		else if (running) {
 			update ();
+			components.forEach(c -> c.update());
 			//Check end
 			if (canGameFinish()) {
 				//Determine winner
@@ -71,10 +74,12 @@ public abstract class BaseMinigame implements Minigame {
 					}
 				}
 				end();
+				components.forEach(c -> c.end());
 				//Start lobby
 				task = generateLobby();
 				task.add(() -> {
 					startLobby();
+					components.forEach(c -> c.startLobby());
 					time = 0;
 					running = false;
 					for (Player player : scoreboard.getOnlinePlayers()) {
@@ -88,6 +93,7 @@ public abstract class BaseMinigame implements Minigame {
 		}
 		else {
 			updateLobby();
+			components.forEach(c -> c.updateLobby());
 			//Check start
 			if (canGameStart()) {
 				time = 0;
@@ -113,6 +119,7 @@ public abstract class BaseMinigame implements Minigame {
 					scoreboard.initScoreboard(scoreboardView);
 					assignTeams(players, scoreboard, scoreboardView);
 					start();
+					components.forEach(c -> c.start());
 				});
 				task.executeAll();
 			}
@@ -201,6 +208,7 @@ public abstract class BaseMinigame implements Minigame {
 	
 	protected void resetPlayer (Player player) {
 		player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+		player.setGameMode(GameMode.SURVIVAL);
 		player.setSaturation(0);
 		player.setExhaustion(0);
 		player.setRemainingAir(10);

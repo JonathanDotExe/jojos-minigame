@@ -79,6 +79,12 @@ public class CustomScoreboard {
 		return Arrays.asList(players.stream().map(u -> Bukkit.getOfflinePlayer(u)).toArray(OfflinePlayer[]::new));
 	}
 	
+	public List<OfflinePlayer> getPlayersInTeam (CustomTeam team) {
+		List<OfflinePlayer> players = new ArrayList<OfflinePlayer>(getPlayers());
+		players.removeIf(p -> getTeam(p) != team);
+		return players;
+	}
+	
 	public List<Player> getOnlinePlayers () {
 		List<Player> players = new ArrayList<Player>();
 		for (UUID id : this.players) {
