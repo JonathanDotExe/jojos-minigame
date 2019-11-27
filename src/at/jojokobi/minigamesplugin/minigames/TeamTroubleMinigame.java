@@ -12,7 +12,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
+import at.jojokobi.minigamesplugin.items.PlayerGlowComponent;
+import at.jojokobi.minigamesplugin.items.RabbitFootComponent;
 import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
+import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
@@ -45,7 +48,11 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	public void init(Plugin plugin) {
 		addComponent(new SpectralArrowComponent());
 		addComponent(new WitherSkullGunComponent());
+		addComponent(new UnstableTNTComponent());
+		addComponent(new RabbitFootComponent());
+		
 		addComponent(new ClimbComponent());
+		addComponent(new PlayerGlowComponent());
 		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
 	}

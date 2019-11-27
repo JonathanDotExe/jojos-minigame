@@ -82,6 +82,7 @@ public class DungeonTower implements GameStructure{
 	@Override
 	public void generate(Location loc, Random random) {
 		int floors = random.nextInt(maxFloors) + 1;
+		System.out.println(floors);
 		Location place = loc.clone();
 		for (int i = 0; i < floors; i++){
 			BasicGenUtil.generateCube(place, block1, 8, 8, 8);

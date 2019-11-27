@@ -44,6 +44,7 @@ public class HouseTower implements GameStructure {
 	public void generate(Location loc, Random random) {
 		Location place = loc.clone();
 		int floors = random.nextInt(maxFloors) + 1;
+		System.out.println(floors);
 		for (int i = 0; i < floors; i++){
 			//Floor
 			BasicGenUtil.generateCube(place.clone(), block2, 8, 1, 8);
