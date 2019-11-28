@@ -2,11 +2,13 @@ package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.function.BiFunction;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import at.jojokobi.minigamesplugin.scoreboard.PlayerScore;
@@ -23,18 +25,25 @@ public class DamageScoreComponent implements GameComponent {
 		this.scoreFunction = scoreFunction;
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.LOWEST)
 	public void onEntityDamage (EntityDamageByEntityEvent event) {
 		//Check world
 		if (event.getDamager().getWorld() == world && event.getEntity() instanceof Player) {
+			Bukkit.broadcastMessage(event.getDamager() + "");
 			Player player = null;
 			//Hit
 			if (event.getDamager() instanceof Player) {
 				player = (Player) event.getDamager();
 			}
 			//TNT
-			else if (event.getDamager() instanceof TNTPrimed && ((TNTPrimed) event.getDamager()).getSource() instanceof Player) {
-				player = (Player) ((TNTPrimed) event.getDamager()).getSource();
+			else if (event.getDamager() instanceof TNTPrimed) {
+				Bukkit.broadcastMessage("Sauce: " + ((TNTPrimed) event.getDamager()).getSource() + "");
+				if (((TNTPrimed) event.getDamager()).getSource() instanceof Player) {
+					player = (Player) ((TNTPrimed) event.getDamager()).getSource();
+				}
+				else if (((TNTPrimed) event.getDamager()).getSource() instanceof Projectile && ((Projectile)((TNTPrimed) event.getDamager()).getSource()) instanceof Player) {
+					player = (Player) ((Projectile)((TNTPrimed) event.getDamager()).getSource()).getShooter();
+				}
 			}
 			//Projectile
 			else if (event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof Player) {

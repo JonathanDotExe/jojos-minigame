@@ -15,6 +15,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import at.jojokobi.minigamesplugin.items.PlayerGlowComponent;
 import at.jojokobi.minigamesplugin.items.RabbitFootComponent;
 import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
+import at.jojokobi.minigamesplugin.items.TNTEggComponent;
 import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
@@ -50,6 +51,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		addComponent(new WitherSkullGunComponent());
 		addComponent(new UnstableTNTComponent());
 		addComponent(new RabbitFootComponent());
+		addComponent(new TNTEggComponent());
 		
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
