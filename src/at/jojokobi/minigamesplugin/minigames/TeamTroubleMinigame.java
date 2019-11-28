@@ -126,8 +126,8 @@ public class TeamTroubleMinigame extends BaseMinigame{
 						newTeam = blueTeam;
 					}
 					//Lose Points
-					int newScore = Math.max(0, playerScore.get(player) - Math.max(playerScore.get(player), 50));
-					int teamMax = getMaxScoreOfTeam(newTeam) - 50;
+					int newScore = Math.max(0, playerScore.get(player) - Math.max(playerScore.get(player)/2, 50));
+					int teamMax = Math.max(getMaxScoreOfTeam(newTeam) - 50, 0);
 					if (newScore > teamMax) {
 						newScore = teamMax;
 					}
