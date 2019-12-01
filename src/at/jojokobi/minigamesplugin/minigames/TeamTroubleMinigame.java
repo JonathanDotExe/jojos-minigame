@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -12,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
+import at.jojokobi.minigamesplugin.items.FreezeHoeComponent;
 import at.jojokobi.minigamesplugin.items.PlayerGlowComponent;
 import at.jojokobi.minigamesplugin.items.RabbitFootComponent;
 import at.jojokobi.minigamesplugin.items.SnowballComponent;
@@ -21,6 +23,7 @@ import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
+import at.jojokobi.minigamesplugin.maps.OceanMapGenerator;
 import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
@@ -56,10 +59,11 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		addComponent(new RabbitFootComponent());
 		addComponent(new TNTEggComponent());
 		addComponent(new SnowballComponent());
+		addComponent(new FreezeHoeComponent());
 		
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
-		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator())));
+		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator())));
 		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
 	}
@@ -90,13 +94,13 @@ public class TeamTroubleMinigame extends BaseMinigame{
 
 	@Override
 	public boolean canGameFinish() {
-		return getTime() >= protectionTime + 60 * 20 && (getTime() >= gameDuration || getScoreboard().getPlayers().isEmpty() || getScoreboard().getPlayers().stream().allMatch(p -> getScoreboard().getTeam(p) == getScoreboard().getTeam(getScoreboard().getPlayers().get(0))));
+		return getTime() >= protectionTime && (getTime() >= gameDuration || getScoreboard().getPlayers().isEmpty() || getScoreboard().getPlayers().stream().allMatch(p -> getScoreboard().getTeam(p) == getScoreboard().getTeam(getScoreboard().getPlayers().get(0))));
 	}
 
 	@Override
 	public boolean canGameStart() {
 		int players = determinePlayers().size();
-		return players >= maxPlayers || (getTime() > maxWaitTime && players >= 1);
+		return players >= maxPlayers || (getTime() > maxWaitTime && players >= 2);
 	}
 
 	@Override
@@ -141,6 +145,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 					playerScore.set(newScore, player);
 					sendGameTitle(newTeam.getColor() + player.getName() + " is now in " + newTeam.getDisplayName() + "!", "", 10, 80, 10);
 					event.setDamage(0);
+					player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 				}
 			}
 		}
