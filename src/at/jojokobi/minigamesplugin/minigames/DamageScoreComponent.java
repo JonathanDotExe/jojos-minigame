@@ -37,7 +37,6 @@ public class DamageScoreComponent implements GameComponent {
 			}
 			//TNT
 			else if (event.getDamager() instanceof TNTPrimed) {
-				Bukkit.broadcastMessage("Sauce: " + ((TNTPrimed) event.getDamager()).getSource() + "");
 				if (((TNTPrimed) event.getDamager()).getSource() instanceof Player) {
 					player = (Player) ((TNTPrimed) event.getDamager()).getSource();
 				}
@@ -50,7 +49,7 @@ public class DamageScoreComponent implements GameComponent {
 				player = (Player) ((Projectile) event.getDamager()).getShooter();
 			}
 			
-			if (player != null) {
+			if (player != null && player != event.getEntity()) {
 				score.set(score.get(player) + scoreFunction.apply(event.getFinalDamage(),  ((Player) event.getEntity()).getHealth() - event.getFinalDamage() <= 0.5), player);
 			}
 		}

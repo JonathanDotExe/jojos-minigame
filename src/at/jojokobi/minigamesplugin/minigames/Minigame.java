@@ -8,5 +8,7 @@ public interface Minigame extends Listener{
 	public void init (Plugin plugin);
 
 	public void tick ();
+	
+	public Plugin getPlugin ();
 
 }

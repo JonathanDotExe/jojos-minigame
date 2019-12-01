@@ -37,4 +37,14 @@ public class SimpleLobbyGenerator implements MapGenerator{
 		return task;
 	}
 
+	@Override
+	public String getName() {
+		return "lobby";
+	}
+
+	@Override
+	public String getDisplayName() {
+		return "The Lobby";
+	}
+
 }

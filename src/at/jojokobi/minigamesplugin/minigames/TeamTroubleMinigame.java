@@ -14,11 +14,14 @@ import org.bukkit.scoreboard.DisplaySlot;
 
 import at.jojokobi.minigamesplugin.items.PlayerGlowComponent;
 import at.jojokobi.minigamesplugin.items.RabbitFootComponent;
+import at.jojokobi.minigamesplugin.items.SnowballComponent;
 import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
 import at.jojokobi.minigamesplugin.items.TNTEggComponent;
 import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
+import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
+import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
@@ -52,9 +55,11 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		addComponent(new UnstableTNTComponent());
 		addComponent(new RabbitFootComponent());
 		addComponent(new TNTEggComponent());
+		addComponent(new SnowballComponent());
 		
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
+		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator())));
 		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
 	}
@@ -185,7 +190,9 @@ public class TeamTroubleMinigame extends BaseMinigame{
 
 	@Override
 	public void startLobby() {
-		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
+		if (getScoreboard() != null) {
+			spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
+		}
 	}
 
 }

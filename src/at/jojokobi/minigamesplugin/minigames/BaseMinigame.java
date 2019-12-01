@@ -37,8 +37,8 @@ public abstract class BaseMinigame implements Minigame {
 	private MultiTickTask task;
 	private List<GameComponent> components = new ArrayList<GameComponent>();
 	
+	private Plugin plugin;
 	
-
 	public BaseMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
 		super();
 		this.generator = generator;
@@ -48,12 +48,15 @@ public abstract class BaseMinigame implements Minigame {
 
 	@Override
 	public void init(Plugin plugin) {
+		this.plugin = plugin;
 		for (GameComponent gameComponent : components) {
 			gameComponent.init(this);
 			Bukkit.getPluginManager().registerEvents(gameComponent, plugin);
 		}
 		task = generateLobby();
 		task.executeAll();
+		startLobby();
+		components.forEach(c -> c.startLobby());
 	}
 	
 	@Override
@@ -248,6 +251,19 @@ public abstract class BaseMinigame implements Minigame {
 	
 	protected void addComponent (GameComponent comp) {
 		components.add(comp);
+	}
+	
+	@Override
+	public Plugin getPlugin() {
+		return plugin;
+	}
+
+	public void setGenerator(MapGenerator generator) {
+		this.generator = generator;
+	}
+
+	public void setLobbyGenerator(MapGenerator lobbyGenerator) {
+		this.lobbyGenerator = lobbyGenerator;
 	}
 	
 }

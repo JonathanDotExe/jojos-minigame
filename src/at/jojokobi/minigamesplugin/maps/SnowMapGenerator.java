@@ -33,7 +33,7 @@ public class SnowMapGenerator implements MapGenerator {
 			}
 		}
 		
-		// Landscape
+		//Landscape
 		for (int x = 0; x < area.getWidth(); x += 16) {
 			for (int z = 0; z < area.getLength(); z += 16) {
 				int xPos = x;
@@ -51,15 +51,15 @@ public class SnowMapGenerator implements MapGenerator {
 					BasicGenUtil.generateCube(place.clone(), Material.STONE, new OreModifier(random.nextLong()), width - 2, height - 4, length - 2);
 					place.add(-1, height - 1, -1);
 					BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, width, 1, length);
+					//Snow
+					place.add(0, 1, 0);
+					BasicGenUtil.generateCube(place.clone(), Material.SNOW, width, 1, length);
 					//Ice
 					if (random.nextInt(5) == 0) {
 						place.add(1, -5, 1);
-						BasicGenUtil.generateCube(place.clone(), Material.ICE, width, 5, length);
+						BasicGenUtil.generateCube(place.clone(), Material.ICE, width - 2, 5, length - 2);
 						place.add(-1, 5, -1);
 					}
-					place.add(0, 1, 0);
-					//Snow
-					BasicGenUtil.generateCube(place.clone(), Material.SNOW, width, 1, length);
 					//Decoration
 					//Trees
 					for (int i = 0; i < 4; i++){
@@ -116,6 +116,16 @@ public class SnowMapGenerator implements MapGenerator {
 		});
 
 		return task;
+	}
+
+	@Override
+	public String getName() {
+		return "snow";
+	}
+
+	@Override
+	public String getDisplayName() {
+		return "Winter Wonderland";
 	}
 
 }

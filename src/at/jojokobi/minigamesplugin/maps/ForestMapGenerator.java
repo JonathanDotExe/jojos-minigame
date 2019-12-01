@@ -145,4 +145,14 @@ public class ForestMapGenerator implements MapGenerator {
 		return task;
 	}
 
+	@Override
+	public String getName() {
+		return "forest";
+	}
+
+	@Override
+	public String getDisplayName() {
+		return "Epic Forest B-)";
+	}
+
 }
