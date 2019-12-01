@@ -24,7 +24,7 @@ public class WitherSkullGunComponent implements GameComponent{
 	public void onPlayerInteract (PlayerInteractEvent event) {
 		ItemStack item = event.getItem();
 		Player player = event.getPlayer();
-		if (event.getPlayer().getWorld() == world && event.getItem() != null && item.getType() == Material.GOLDEN_HOE && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+		if (event.getPlayer().getWorld() == world && player.getCooldown(Material.GOLDEN_HOE) <= 0 && event.getItem() != null && item.getType() == Material.GOLDEN_HOE && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
 			HashMap<Integer, ? extends ItemStack> skulls = player.getInventory().all(Material.WITHER_SKELETON_SKULL);
 			if (!skulls.isEmpty()){
 				ItemStack skullItem = skulls.get(skulls.keySet().iterator().next());

@@ -35,8 +35,18 @@ public class SpectralArrowComponent implements GameComponent {
 
 	@Override
 	public void updateLobby() {
-		// TODO Auto-generated method stub
-		
+		for (Entity entity : world.getEntitiesByClass(org.bukkit.entity.SpectralArrow.class)) {
+			int startX = entity.getLocation().getBlockX() - 1;
+			int startY = entity.getLocation().getBlockY() - 1;
+			int startZ = entity.getLocation().getBlockZ() - 1;
+			for (int x = 0; x < 3; x++) {
+				for (int y = 0; y < 3; y++) {
+					for (int z = 0; z < 3; z++) {
+						new Location(world, startX + x, startY + y, startZ + z).getBlock().breakNaturally();
+					}
+				}
+			}
+		}		
 	}
 
 	@Override
