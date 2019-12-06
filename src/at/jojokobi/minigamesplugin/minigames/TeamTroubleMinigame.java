@@ -72,6 +72,9 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	public void start() {
 		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 		resetPlayers(getScoreboard().getOnlinePlayers());
+		for (OfflinePlayer player : getScoreboard().getPlayers()) {
+			playerScore.set(100, player);
+		}
 	}
 
 	@Override
