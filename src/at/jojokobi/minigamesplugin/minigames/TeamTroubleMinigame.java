@@ -36,7 +36,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	private int gameDuration = 10 * 60 * 20;
 	private int maxPlayers = 8;
 	private int maxWaitTime = 20 * 20;
-	private int protectionTime = 2 * 60 * 20;
+	private int protectionTime = 3 * 60 * 20;
 	
 	private GlobalScore<Integer> timerScore;
 	private PlayerScore playerScore;
