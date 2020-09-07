@@ -22,6 +22,7 @@ import at.jojokobi.minigamesplugin.items.TNTEggComponent;
 import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
+import at.jojokobi.minigamesplugin.maps.JungleMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.maps.OceanMapGenerator;
 import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
@@ -63,7 +64,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
-		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator())));
+		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
 		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
 	}
