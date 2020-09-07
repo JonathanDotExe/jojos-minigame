@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
+import at.jojokobi.minigamesplugin.items.CocoaComponent;
 import at.jojokobi.minigamesplugin.items.FreezeHoeComponent;
 import at.jojokobi.minigamesplugin.items.PlayerGlowComponent;
 import at.jojokobi.minigamesplugin.items.RabbitFootComponent;
@@ -61,6 +62,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		addComponent(new TNTEggComponent());
 		addComponent(new SnowballComponent());
 		addComponent(new FreezeHoeComponent());
+		addComponent(new CocoaComponent());
 		
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());

@@ -7,9 +7,11 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 
 import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.generation.population.OreModifier;
+import at.jojokobi.mcutil.loot.LootItem;
 import at.jojokobi.minigamesplugin.stuctures.DungeonTower;
 import at.jojokobi.minigamesplugin.stuctures.House;
 import at.jojokobi.minigamesplugin.stuctures.HouseTower;
@@ -86,7 +88,7 @@ public class JungleMapGenerator implements MapGenerator {
 		
 		//Generate Houses
 		task.add(() -> {
-			House house = new House(Material.JUNGLE_PLANKS, Material.JUNGLE_LOG);
+			House house = new House(Material.JUNGLE_PLANKS, Material.JUNGLE_LOG, new LootItem(0.2, new ItemStack(Material.COCOA_BEANS), 1, 2));
 			for (int i = 0; i < 8; i++){
 				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
 				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
@@ -96,7 +98,7 @@ public class JungleMapGenerator implements MapGenerator {
 		});
 		//Generate House towers
 		task.add(() -> {
-			HouseTower house = new HouseTower(Material.JUNGLE_PLANKS, Material.SPRUCE_LOG, 12);
+			HouseTower house = new HouseTower(Material.JUNGLE_PLANKS, Material.SPRUCE_LOG, 12, new LootItem(0.2, new ItemStack(Material.COCOA_BEANS), 1, 2));
 			for (int i = 0; i < 4 ; i++){
 				Location loc = area.getPos().clone().add(random.nextInt((int) area.getWidth()), 0, random.nextInt((int) area.getLength()));
 				int y = loc.getWorld().getHighestBlockYAt((int) loc.getX(), (int) loc.getZ());
