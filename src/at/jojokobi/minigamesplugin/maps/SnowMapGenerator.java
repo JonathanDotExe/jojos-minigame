@@ -56,7 +56,6 @@ public class SnowMapGenerator implements MapGenerator {
 					}
 					//Decoration
 					//Trees
-					place.add(0, -1, 0);
 					for (int i = 0; i < 4; i++){
 						int treeX = random.nextInt(width);
 						int treeZ = random.nextInt(length);

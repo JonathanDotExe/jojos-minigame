@@ -104,7 +104,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@Override
 	public boolean canGameStart() {
 		int players = determinePlayers().size();
-		return players >= maxPlayers || (getTime() > maxWaitTime && players >= 2);
+		return players >= maxPlayers || (getTime() > maxWaitTime && players >= 1);
 	}
 
 	@Override

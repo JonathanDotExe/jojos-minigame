@@ -47,22 +47,32 @@ public class JungleMapGenerator implements MapGenerator {
 					place.add(0, 1, 0);
 					BasicGenUtil.generateCube(place.clone(), Material.GRASS, width, 1, length);
 					//Decoration
-					//Trees
-					place.add(0, -1, 0);
+					//Big Trees
 					for (int i = 0; i < 8; i++){
 						int treeX = random.nextInt(width);
 						int treeZ = random.nextInt(length);
 						place.setX(place.getX() + treeX);
 						place.setZ(place.getZ() + treeZ);
 						place.getBlock().setType(Material.AIR);
-						switch (random.nextInt(3)) {
+						place.getBlock().getRelative(1, 0, 0).setType(Material.AIR);
+						place.getBlock().getRelative(0, 0, 1).setType(Material.AIR);
+						place.getBlock().getRelative(1, 0, 1).setType(Material.AIR);
+						place.getWorld().generateTree(place, TreeType.JUNGLE);
+						place.setX(place.getX() - treeX);
+						place.setZ(place.getZ() - treeZ);
+					}
+					//Trees
+					for (int i = 0; i < 8; i++){
+						int treeX = random.nextInt(width);
+						int treeZ = random.nextInt(length);
+						place.setX(place.getX() + treeX);
+						place.setZ(place.getZ() + treeZ);
+						place.getBlock().setType(Material.AIR);
+						switch (random.nextInt(1)) {
 						case 0:
 							place.getWorld().generateTree(place, TreeType.COCOA_TREE);
 							break;
 						case 1:
-							place.getWorld().generateTree(place, TreeType.JUNGLE);
-							break;
-						case 2:
 							place.getWorld().generateTree(place, TreeType.JUNGLE_BUSH);
 							break;
 						}
