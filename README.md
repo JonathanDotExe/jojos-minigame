@@ -1,2 +1,2 @@
 # jojos-minigame
-A collection of cool minigames including the OG  game Team Trouble.
+A collection of cool minigames including Team Trouble.
