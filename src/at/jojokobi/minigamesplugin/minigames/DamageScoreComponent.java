@@ -2,7 +2,6 @@ package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.function.BiFunction;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -13,23 +12,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import at.jojokobi.minigamesplugin.scoreboard.PlayerScore;
 
-public class DamageScoreComponent implements GameComponent {
+public abstract class DamageScoreComponent implements GameComponent {
 	
-	private BiFunction<Double, Boolean, Integer> scoreFunction;
-	private PlayerScore score;
 	private World world;
-	
 
-	public DamageScoreComponent(BiFunction<Double, Boolean, Integer> scoreFunction) {
+	public DamageScoreComponent() {
 		super();
-		this.scoreFunction = scoreFunction;
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onEntityDamage (EntityDamageByEntityEvent event) {
 		//Check world
 		if (event.getDamager().getWorld() == world && event.getEntity() instanceof Player) {
-			Bukkit.broadcastMessage(event.getDamager() + "");
 			Player player = null;
 			//Hit
 			if (event.getDamager() instanceof Player) {
@@ -87,6 +81,8 @@ public class DamageScoreComponent implements GameComponent {
 	public void startLobby() {
 		
 	}
+	
+	public abstract void onDamage(Player damager, Player damaged, double damage);
 
 	@Override
 	public void init(BaseMinigame game) {
