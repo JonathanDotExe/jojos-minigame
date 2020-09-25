@@ -1,20 +1,19 @@
 package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.items.CocoaComponent;
 import at.jojokobi.minigamesplugin.items.FreezeHoeComponent;
@@ -33,7 +32,6 @@ import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
-import at.jojokobi.minigamesplugin.scoreboard.PlayerScore;
 import at.jojokobi.minigamesplugin.util.Area;
 import at.jojokobi.minigamesplugin.util.StaticUtils;
 
@@ -75,6 +73,10 @@ public class MurdererMinigame extends BaseMinigame{
 	public void start() {
 		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 		resetPlayers(getScoreboard().getOnlinePlayers());
+		//Display role
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendMessage("You are a " + getScoreboard().getTeam(player).getName());
+		}
 	}
 
 	@Override
@@ -112,8 +114,8 @@ public class MurdererMinigame extends BaseMinigame{
 		timerScore = new GlobalScore<>(0, "Time: ");
 		scoreboard.addScore(timerScore);
 		//Teams
-		scoreboard.addTeam(murdererTeam = new CustomTeam(ChatColor.WHITE, "murderers", "Murderers", true, true));
-		scoreboard.addTeam(innocentTeam = new CustomTeam(ChatColor.WHITE, "innocents", "Innocents", true, true));
+		scoreboard.addTeam(murdererTeam = new CustomTeam(ChatColor.WHITE, "murderers", "murderer", true, true));
+		scoreboard.addTeam(innocentTeam = new CustomTeam(ChatColor.WHITE, "innocents", "innocent", true, true));
 	}
 	
 	@EventHandler
@@ -171,7 +173,7 @@ public class MurdererMinigame extends BaseMinigame{
 				resetPlayer(event.getPlayer());
 			}
 			else {
-				event.getPlayer().kickPlayer("Sorry a round of Team Trouble is already running!");
+				event.getPlayer().kickPlayer("Sorry a round of Murderer is already running!");
 			}
 		}
 	}
@@ -188,13 +190,25 @@ public class MurdererMinigame extends BaseMinigame{
 		}
 	}
 
+	@Override
+	protected void assignTeams(List<Player> players, CustomScoreboard board, Scoreboard scoreboardView) {
+		int murdererAmount = players.size()/6 + 1;
+		for (Player player : players) {
+			board.setTeam(player, innocentTeam, scoreboardView);
+		}
+		Collections.shuffle(players);
+		players = players.subList(0, Math.min(players.size(), murdererAmount));
+		for (Player player : players) {
+			board.setTeam(player, murdererTeam, scoreboardView);
+		}
+	}
 
 	@Override
 	public Winner determineWinner() {
-		List<Player> players = getScoreboard().getOnlinePlayers();
-		System.out.println(players);
-		players.sort((p1, p2) -> Integer.compare(playerScore.get(p2), playerScore.get(p1)));
-		return players.isEmpty() ? null : new PlayerWinner(players.get(0), getScoreboard().getTeam(players.get(0)).getColor());
+		if (getScoreboard().getOnlinePlayersInTeam(innocentTeam).stream().anyMatch(p -> p.getGameMode() == GameMode.SURVIVAL)) {
+			return new TeamWinner(innocentTeam);
+		}
+		return new TeamWinner(murdererTeam);
 	}
 
 	@Override
