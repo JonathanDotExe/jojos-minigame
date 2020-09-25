@@ -157,9 +157,10 @@ public class MurdererMinigame extends BaseMinigame{
 					}
 					//Death sign
 					player.getLocation().getBlock().setType(Material.OAK_SIGN);
-					Sign sign = (Sign) player.getLocation().getBlock();
+					Sign sign = (Sign) player.getLocation().getBlock().getState();
 					sign.setLine(1, player.getName());
 					sign.setLine(2, getScoreboard().getTeam(player).getDisplayName());
+					sign.update();
 				}
 			}
 		}

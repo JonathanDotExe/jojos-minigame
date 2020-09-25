@@ -189,7 +189,6 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@Override
 	public Winner determineWinner() {
 		List<Player> players = getScoreboard().getOnlinePlayers();
-		System.out.println(players);
 		players.sort((p1, p2) -> Integer.compare(playerScore.get(p2), playerScore.get(p1)));
 		return players.isEmpty() ? null : new PlayerWinner(players.get(0), getScoreboard().getTeam(players.get(0)).getColor());
 	}

@@ -87,7 +87,7 @@ public class CustomScoreboard {
 	}
 	
 	public List<Player> getOnlinePlayersInTeam (CustomTeam team) {
-		return getOnlinePlayersInTeam(team).stream().filter(p -> p.getPlayer() != null).map(p -> p.getPlayer()).collect(Collectors.toList());
+		return getPlayersInTeam(team).stream().filter(p -> p.getPlayer() != null).map(p -> p.getPlayer()).collect(Collectors.toList());
 	}
 	
 	public List<Player> getOnlinePlayers () {
