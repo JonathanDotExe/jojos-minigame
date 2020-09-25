@@ -1,17 +1,19 @@
 package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.attribute.Attribute;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.items.CocoaComponent;
 import at.jojokobi.minigamesplugin.items.FreezeHoeComponent;
@@ -30,26 +32,23 @@ import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
-import at.jojokobi.minigamesplugin.scoreboard.PlayerScore;
 import at.jojokobi.minigamesplugin.util.Area;
+import at.jojokobi.minigamesplugin.util.StaticUtils;
 
-public class TeamTroubleMinigame extends BaseMinigame{
+public class MurdererMinigame extends BaseMinigame{
 
 	private int gameDuration = 30 * 60 * 20;
-	private int maxPlayers = 8;
+	private int maxPlayers = 10;
 	private int maxWaitTime = 20 * 20;
-	private int protectionTime = 3 * 60 * 20;
+	private int protectionTime = 60 * 20;
 	
 	private GlobalScore<Integer> timerScore;
-	private PlayerScore playerScore;
 	
-	private CustomTeam redTeam;
-	private CustomTeam blueTeam;
-	
-	private DamageScoreComponent damageScoreComponent;
+	private CustomTeam murdererTeam;
+	private CustomTeam innocentTeam;
 
 	
-	public TeamTroubleMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
+	public MurdererMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
 		super(generator, lobbyGenerator, gameArea);
 	}
 	
@@ -67,7 +66,6 @@ public class TeamTroubleMinigame extends BaseMinigame{
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
 		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
-		addComponent(damageScoreComponent = new DamageScoreComponent((d, b) -> (int) (d * 5 + (b ? 100 : 0))));
 		super.init(plugin);
 	}
 	
@@ -75,8 +73,9 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	public void start() {
 		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 		resetPlayers(getScoreboard().getOnlinePlayers());
-		for (OfflinePlayer player : getScoreboard().getPlayers()) {
-			playerScore.set(100, player);
+		//Display role
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendMessage("You are a " + getScoreboard().getTeam(player).getDisplayName());
 		}
 	}
 
@@ -100,7 +99,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 
 	@Override
 	public boolean canGameFinish() {
-		return getTime() >= protectionTime && (getTime() >= gameDuration || getScoreboard().getPlayers().isEmpty() || getScoreboard().getPlayers().stream().allMatch(p -> getScoreboard().getTeam(p) == getScoreboard().getTeam(getScoreboard().getPlayers().get(0))));
+		return getTime() >= protectionTime && (getTime() >= gameDuration || getScoreboard().getPlayers().isEmpty() || getScoreboard().getOnlinePlayersInTeam(innocentTeam).stream().allMatch(p -> p.getGameMode() != GameMode.SURVIVAL) || getScoreboard().getOnlinePlayersInTeam(murdererTeam).stream().allMatch(p -> p.getGameMode() != GameMode.SURVIVAL));
 	}
 
 	@Override
@@ -113,13 +112,10 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	public void initScoreboard(CustomScoreboard scoreboard) {
 		//Score
 		timerScore = new GlobalScore<>(0, "Time: ");
-		playerScore = new PlayerScore("score", "Score", DisplaySlot.PLAYER_LIST);
 		scoreboard.addScore(timerScore);
-		scoreboard.addScore(playerScore);
-		damageScoreComponent.setScore(playerScore);
 		//Teams
-		scoreboard.addTeam(redTeam = new CustomTeam(ChatColor.RED, "team_red", "Team Red", false, true));
-		scoreboard.addTeam(blueTeam = new CustomTeam(ChatColor.BLUE, "team_blue", "Team Blue", false, true));
+		scoreboard.addTeam(murdererTeam = new CustomTeam(ChatColor.WHITE, "murderers", "murderer", true, true));
+		scoreboard.addTeam(innocentTeam = new CustomTeam(ChatColor.WHITE, "innocents", "innocent", true, true));
 	}
 	
 	@EventHandler
@@ -132,39 +128,42 @@ public class TeamTroubleMinigame extends BaseMinigame{
 			else if (event.getEntity() instanceof Player && getScoreboard() != null && getScoreboard().getOnlinePlayers().contains(event.getEntity())){
 				Player player = (Player) event.getEntity();
 				if (player.getHealth() - event.getFinalDamage() <= 0.5) {
-					CustomTeam newTeam;
-					//Switch team
-					if (getScoreboard().getTeam(player) ==  blueTeam) {
-						newTeam = redTeam;
-					}
-					else {
-						newTeam = blueTeam;
-					}
-					//Lose Points
-					int newScore = Math.max(0, playerScore.get(player) - Math.max(playerScore.get(player)/2, 50));
-					int teamMax = Math.max(getMaxScoreOfTeam(newTeam) - 50, 0);
-					if (newScore > teamMax) {
-						newScore = teamMax;
-					}
-					
-					setTeam(player, newTeam);
-					playerScore.set(newScore, player);
-					sendGameTitle(newTeam.getColor() + player.getName() + " is now in " + newTeam.getDisplayName() + "!", "", 10, 80, 10);
+					//Will die
 					event.setDamage(0);
-					player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+					player.setGameMode(GameMode.SPECTATOR);
+					//Get killer
+					Player killer = StaticUtils.getDamagingPlayer(event);
+					if (killer != null) {
+						//Death messages
+						player.sendMessage(killer.getName() + " killed you!");
+						killer.sendMessage("You killed " + player.getName());
+						
+						//Innocent/murderer
+						if (getScoreboard().getTeam(player) == innocentTeam) {
+							killer.sendMessage(player.getName() + " was an innocent!");
+						}
+						else {
+							killer.sendMessage(player.getName() + " was a murderer!");
+						}
+						//Kill killer if both are innocent
+						if (getScoreboard().getTeam(killer) == innocentTeam && getScoreboard().getTeam(player) == innocentTeam) {
+							killer.damage(killer.getHealth());
+							player.sendMessage(killer.getName() + " died because he was an innocent too!");
+							killer.sendMessage("You died because " + player.getName() + " was an innocent too!");
+						}			
+						else if (getScoreboard().getTeam(player) == murdererTeam) {
+							sendGameMessage(player.getName() + " died and was a murderer!");
+						}
+					}
+					//Death sign
+					player.getLocation().getBlock().setType(Material.OAK_SIGN);
+					Sign sign = (Sign) player.getLocation().getBlock().getState();
+					sign.setLine(1, player.getName());
+					sign.setLine(2, getScoreboard().getTeam(player).getDisplayName());
+					sign.update();
 				}
 			}
 		}
-	}
-	
-	private int getMaxScoreOfTeam (CustomTeam team) {
-		int max = 0;
-		for (OfflinePlayer player : getScoreboard().getPlayersInTeam(team)) {
-			if (playerScore.get(player) > max) {
-				max = playerScore.get(player);
-			}
-		}
-		return max;
 	}
 	
 	@EventHandler
@@ -175,7 +174,7 @@ public class TeamTroubleMinigame extends BaseMinigame{
 				resetPlayer(event.getPlayer());
 			}
 			else {
-				event.getPlayer().kickPlayer("Sorry a round of Team Trouble is already running!");
+				event.getPlayer().kickPlayer("Sorry a round of Murderer is already running!");
 			}
 		}
 	}
@@ -185,17 +184,37 @@ public class TeamTroubleMinigame extends BaseMinigame{
 			player.sendTitle(title, subtitle, fadeIn, duration, fadeOut);
 		}
 	}
+	
+	private void sendGameMessage (String message) {
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendMessage(message);
+		}
+	}
+
+	@Override
+	protected void assignTeams(List<Player> players, CustomScoreboard board, Scoreboard scoreboardView) {
+		int murdererAmount = players.size()/6 + 1;
+		for (Player player : players) {
+			board.setTeam(player, innocentTeam, scoreboardView);
+		}
+		Collections.shuffle(players);
+		players = players.subList(0, Math.min(players.size(), murdererAmount));
+		for (Player player : players) {
+			board.setTeam(player, murdererTeam, scoreboardView);
+		}
+	}
 
 	@Override
 	public Winner determineWinner() {
-		List<Player> players = getScoreboard().getOnlinePlayers();
-		players.sort((p1, p2) -> Integer.compare(playerScore.get(p2), playerScore.get(p1)));
-		return players.isEmpty() ? null : new PlayerWinner(players.get(0), getScoreboard().getTeam(players.get(0)).getColor());
+		if (getScoreboard().getOnlinePlayersInTeam(innocentTeam).stream().anyMatch(p -> p.getGameMode() == GameMode.SURVIVAL)) {
+			return new TeamWinner(innocentTeam);
+		}
+		return new TeamWinner(murdererTeam);
 	}
 
 	@Override
 	public String getName() {
-		return "Team Trouble";
+		return "Murderer";
 	}
 
 	@Override

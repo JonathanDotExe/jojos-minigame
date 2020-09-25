@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -83,6 +84,10 @@ public class CustomScoreboard {
 		List<OfflinePlayer> players = new ArrayList<OfflinePlayer>(getPlayers());
 		players.removeIf(p -> getTeam(p) != team);
 		return players;
+	}
+	
+	public List<Player> getOnlinePlayersInTeam (CustomTeam team) {
+		return getPlayersInTeam(team).stream().filter(p -> p.getPlayer() != null).map(p -> p.getPlayer()).collect(Collectors.toList());
 	}
 	
 	public List<Player> getOnlinePlayers () {
