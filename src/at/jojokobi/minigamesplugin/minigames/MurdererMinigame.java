@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -33,6 +35,7 @@ import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
 import at.jojokobi.minigamesplugin.scoreboard.PlayerScore;
 import at.jojokobi.minigamesplugin.util.Area;
+import at.jojokobi.minigamesplugin.util.StaticUtils;
 
 public class MurdererMinigame extends BaseMinigame{
 
@@ -126,21 +129,38 @@ public class MurdererMinigame extends BaseMinigame{
 					//Will die
 					event.setDamage(0);
 					player.setGameMode(GameMode.SPECTATOR);
-					//Both die if an innocent killed an innocent
-					
+					//Get killer
+					Player killer = StaticUtils.getDamagingPlayer(event);
+					if (killer != null) {
+						//Death messages
+						player.sendMessage(killer.getName() + " killed you!");
+						killer.sendMessage("You killed " + player.getName());
+						
+						//Innocent/murderer
+						if (getScoreboard().getTeam(player) == innocentTeam) {
+							killer.sendMessage(player.getName() + " was an innocent!");
+						}
+						else {
+							killer.sendMessage(player.getName() + " was a murderer!");
+						}
+						//Kill killer if both are innocent
+						if (getScoreboard().getTeam(killer) == innocentTeam && getScoreboard().getTeam(player) == innocentTeam) {
+							killer.damage(killer.getHealth());
+							player.sendMessage(killer.getName() + " died because he was an innocent too!");
+							killer.sendMessage("You died because " + player.getName() + " was an innocent too!");
+						}			
+						else if (getScoreboard().getTeam(player) == murdererTeam) {
+							sendGameMessage(player.getName() + " died and was a murderer!");
+						}
+					}
+					//Death sign
+					player.getLocation().getBlock().setType(Material.OAK_SIGN);
+					Sign sign = (Sign) player.getLocation().getBlock();
+					sign.setLine(1, player.getName());
+					sign.setLine(2, getScoreboard().getTeam(player).getDisplayName());
 				}
 			}
 		}
-	}
-	
-	private int getMaxScoreOfTeam (CustomTeam team) {
-		int max = 0;
-		for (OfflinePlayer player : getScoreboard().getPlayersInTeam(team)) {
-			if (playerScore.get(player) > max) {
-				max = playerScore.get(player);
-			}
-		}
-		return max;
 	}
 	
 	@EventHandler
@@ -161,6 +181,13 @@ public class MurdererMinigame extends BaseMinigame{
 			player.sendTitle(title, subtitle, fadeIn, duration, fadeOut);
 		}
 	}
+	
+	private void sendGameMessage (String message) {
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendMessage(message);
+		}
+	}
+
 
 	@Override
 	public Winner determineWinner() {
