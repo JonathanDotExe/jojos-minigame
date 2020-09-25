@@ -108,15 +108,12 @@ public abstract class BaseMinigame implements Minigame {
 					//Init Scoreboard
 					scoreboardView = Bukkit.getScoreboardManager().getNewScoreboard();
 					scoreboard = new CustomScoreboard(getName());
-					for (Player player : players) {
-						scoreboard.addPlayer(player);
-						player.setScoreboard(scoreboardView);
-					}
 					//Create Fields and Teams
 					initScoreboard(scoreboard);
 					//Add players
 					for (Player player : players) {
 						scoreboard.addPlayer(player);
+						player.setScoreboard(scoreboardView);
 					}
 					//Show scoreboard
 					scoreboard.initScoreboard(scoreboardView);

@@ -75,7 +75,7 @@ public class MurdererMinigame extends BaseMinigame{
 		resetPlayers(getScoreboard().getOnlinePlayers());
 		//Display role
 		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.sendMessage("You are a " + getScoreboard().getTeam(player).getName());
+			player.sendMessage("You are a " + getScoreboard().getTeam(player).getDisplayName());
 		}
 	}
 
