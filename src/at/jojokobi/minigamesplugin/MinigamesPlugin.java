@@ -7,6 +7,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import at.jojokobi.minigamesplugin.maps.CaveMapGenerator;
 import at.jojokobi.minigamesplugin.maps.SimpleLobbyGenerator;
 import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.minigames.MurdererMinigame;
@@ -38,7 +39,7 @@ public class MinigamesPlugin extends JavaPlugin{
 			World world = this.getServer().createWorld(generator);
 			world.setSpawnLocation(32, 70, 32);
 			world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-			handler.add(new MurdererMinigame(new SnowMapGenerator(), new SimpleLobbyGenerator(), new Area(new Location(world, 0, 0, 0), 64, 256,64)));
+			handler.add(new MurdererMinigame(new CaveMapGenerator(), new SimpleLobbyGenerator(), new Area(new Location(world, 0, 0, 0), 64, 256,64)));
 		}
 		
 		handler.start(this);

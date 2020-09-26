@@ -11,7 +11,7 @@ import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.loot.LootInventory;
 import at.jojokobi.mcutil.loot.LootItem;
 
-public class DungeonTower implements GameStructure{
+public class DungeonTower extends GameStructureBase{
 	
 	private Material block1;
 	private Material block2;
@@ -45,7 +45,7 @@ public class DungeonTower implements GameStructure{
 	}
  
 	public DungeonTower(Material block1, Material block2, int maxFloors, LootItem... items) {
-		super();
+		super(8, 8, 8 * maxFloors);
 		this.block1 = block1;
 		this.block2 = block2;
 		this.maxFloors = maxFloors;

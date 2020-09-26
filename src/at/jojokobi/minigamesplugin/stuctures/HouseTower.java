@@ -12,7 +12,7 @@ import at.jojokobi.mcutil.generation.FurnitureGenUtil;
 import at.jojokobi.mcutil.loot.LootInventory;
 import at.jojokobi.mcutil.loot.LootItem;
 
-public class HouseTower implements GameStructure {
+public class HouseTower extends GameStructureBase {
 	
 	private Material block1 = Material.AIR;
 	private Material block2 = Material.AIR;
@@ -21,7 +21,7 @@ public class HouseTower implements GameStructure {
 	
 
 	public HouseTower(Material block1, Material block2, int maxFloors, LootItem... items) {
-		super();
+		super(8, 8, 7 * maxFloors + 1);
 		this.block1 = block1;
 		this.block2 = block2;
 		this.maxFloors = maxFloors;

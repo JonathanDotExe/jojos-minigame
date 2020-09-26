@@ -24,11 +24,7 @@ import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
 import at.jojokobi.minigamesplugin.items.TNTEggComponent;
 import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
-import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
-import at.jojokobi.minigamesplugin.maps.JungleMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
-import at.jojokobi.minigamesplugin.maps.OceanMapGenerator;
-import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
@@ -66,13 +62,16 @@ public class MurdererMinigame extends BaseMinigame{
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
 		addComponent(new ChatRangeComponent());
-		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
+//		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
 		super.init(plugin);
 	}
 	
 	@Override
 	public void start() {
-		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
+		//Teleport player to spawn
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.teleport(getGameArea().getPos().add(getGameArea().getWidth()/2, 8, getGameArea().getLength()/2));
+		}
 		resetPlayers(getScoreboard().getOnlinePlayers());
 		//Display role
 		for (Player player : getScoreboard().getOnlinePlayers()) {
