@@ -70,7 +70,7 @@ public class MurdererMinigame extends BaseMinigame{
 	public void start() {
 		//Teleport player to spawn
 		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.teleport(getGameArea().getPos().add(getGameArea().getWidth()/2, 8, getGameArea().getLength()/2));
+			player.teleport(getGameArea().getPos().clone().add((int) (getGameArea().getWidth()/32) * 16 - 8, 8, (int) (getGameArea().getLength()/32) * 16 - 8));
 		}
 		resetPlayers(getScoreboard().getOnlinePlayers());
 		//Display role
