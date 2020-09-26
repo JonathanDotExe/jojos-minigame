@@ -62,6 +62,7 @@ public class MurdererMinigame extends BaseMinigame{
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
 		addComponent(new ChatRangeComponent());
+		addComponent(new StrengthComponent());
 //		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
 		super.init(plugin);
 	}
