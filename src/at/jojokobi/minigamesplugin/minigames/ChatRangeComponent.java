@@ -16,10 +16,10 @@ public class ChatRangeComponent implements GameComponent{
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		if (game.getScoreboard().getPlayers().contains(event.getPlayer())) {
+		if (game.isRunning() && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer())) {
 			event.setCancelled(true);
 			for (Entity e : event.getPlayer().getNearbyEntities(range, range, range)) {
-				if (event.getRecipients().contains(e)) {
+				if (event.getRecipients().contains(e) || e == event.getPlayer()) {
 					e.sendMessage("<" + event.getPlayer() + "> " + event.getMessage());
 				}
 			}
