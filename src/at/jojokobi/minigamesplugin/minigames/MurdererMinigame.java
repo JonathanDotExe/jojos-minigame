@@ -66,7 +66,7 @@ public class MurdererMinigame extends BaseMinigame{
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
 		addComponent(new ChatRangeComponent());
-//		addComponent(new StrengthComponent());
+		addComponent(new StrengthComponent());
 		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
 		super.init(plugin);
 	}
@@ -80,7 +80,7 @@ public class MurdererMinigame extends BaseMinigame{
 		resetPlayers(getScoreboard().getOnlinePlayers());
 		//Display role
 		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.sendTitle(getScoreboard().getTeam(player).getDisplayName(), getScoreboard().getTeam(player) == murdererTeam ? "Kill all innocents" : "", arg2, arg3, arg4);
+			player.sendTitle(getScoreboard().getTeam(player).getDisplayName(), getScoreboard().getTeam(player) == murdererTeam ? "Kill all innocents" : "Kill the murderers", 20, 80, 20);
 			player.sendMessage("You are a " + getScoreboard().getTeam(player).getDisplayName());
 		}
 	}
