@@ -10,7 +10,7 @@ public class StrengthComponent implements GameComponent {
 	
 	@Override
 	public void init(BaseMinigame game) {
-		
+		this.game = game;
 	}
 
 	@Override
@@ -20,8 +20,10 @@ public class StrengthComponent implements GameComponent {
 
 	@Override
 	public void update() {
-		for (Player player : game.getScoreboard().getOnlinePlayers()) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20, 2));
+		if (game.getScoreboard() != null) {
+			for (Player player : game.getScoreboard().getOnlinePlayers()) {
+				player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20, 2));
+			}
 		}
 	}
 

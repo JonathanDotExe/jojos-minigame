@@ -24,7 +24,11 @@ import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
 import at.jojokobi.minigamesplugin.items.TNTEggComponent;
 import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
+import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
+import at.jojokobi.minigamesplugin.maps.JungleMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
+import at.jojokobi.minigamesplugin.maps.OceanMapGenerator;
+import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
@@ -62,8 +66,8 @@ public class MurdererMinigame extends BaseMinigame{
 		addComponent(new ClimbComponent());
 		addComponent(new PlayerGlowComponent());
 		addComponent(new ChatRangeComponent());
-		addComponent(new StrengthComponent());
-//		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
+//		addComponent(new StrengthComponent());
+		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
 		super.init(plugin);
 	}
 	
@@ -76,6 +80,7 @@ public class MurdererMinigame extends BaseMinigame{
 		resetPlayers(getScoreboard().getOnlinePlayers());
 		//Display role
 		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendTitle(getScoreboard().getTeam(player).getDisplayName(), getScoreboard().getTeam(player) == murdererTeam ? "Kill all innocents" : "", arg2, arg3, arg4);
 			player.sendMessage("You are a " + getScoreboard().getTeam(player).getDisplayName());
 		}
 	}
@@ -194,7 +199,9 @@ public class MurdererMinigame extends BaseMinigame{
 
 	@Override
 	protected void assignTeams(List<Player> players, CustomScoreboard board, Scoreboard scoreboardView) {
+		System.out.println(players);
 		int murdererAmount = players.size()/6 + 1;
+		System.out.println(murdererAmount);
 		for (Player player : players) {
 			board.setTeam(player, innocentTeam, scoreboardView);
 		}
