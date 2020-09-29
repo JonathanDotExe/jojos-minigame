@@ -3,6 +3,7 @@ package at.jojokobi.minigamesplugin.minigames;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -24,6 +25,8 @@ import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
 import at.jojokobi.minigamesplugin.items.TNTEggComponent;
 import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
+import at.jojokobi.minigamesplugin.kits.PlayerKit;
+import at.jojokobi.minigamesplugin.kits.PlayerKits;
 import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
 import at.jojokobi.minigamesplugin.maps.JungleMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
@@ -73,15 +76,20 @@ public class MurdererMinigame extends BaseMinigame{
 	
 	@Override
 	public void start() {
+		Random random = new Random();
 		//Teleport player to spawn
 		for (Player player : getScoreboard().getOnlinePlayers()) {
 			player.teleport(getGameArea().getPos().clone().add((int) (getGameArea().getWidth()/32) * 16 - 8, 8, (int) (getGameArea().getLength()/32) * 16 - 8));
 		}
 		resetPlayers(getScoreboard().getOnlinePlayers());
-		//Display role
+
 		for (Player player : getScoreboard().getOnlinePlayers()) {
+			//Display role
 			player.sendTitle(getScoreboard().getTeam(player).getDisplayName(), getScoreboard().getTeam(player) == murdererTeam ? "Kill all innocents" : "Kill the murderers", 20, 80, 20);
 			player.sendMessage("You are a " + getScoreboard().getTeam(player).getDisplayName());
+			//Give kit
+			PlayerKit kit = PlayerKits.KITS.get(random.nextInt(PlayerKits.KITS.size()));
+			kit.give(player.getInventory());
 		}
 	}
 
