@@ -1,9 +1,24 @@
 package at.jojokobi.minigamesplugin.kits;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 public final class PlayerKits {
+	
+	private static ItemStack createPotion(Material type, PotionData data) {
+		ItemStack item = new ItemStack(type);
+		PotionMeta meta = (PotionMeta) item.getItemMeta();
+		meta.setBasePotionData(data);
+		item.setItemMeta(meta);
+		
+		return item;
+	}
 	
 	public static final PlayerKit SWORD_KIT = new PlayerKit(
 			new ItemStack(Material.DIAMOND_SWORD),
@@ -39,8 +54,15 @@ public final class PlayerKits {
 			new ItemStack(Material.SNOWBALL, 16)
 		);
 	public static final PlayerKit BREWER_KIT = new PlayerKit(
-			new ItemStack(Material.STONE_SWORD),
-			new ItemStack(Material.POTION, 1),	//TODO potions with effects
+			new ItemStack(Material.IRON_SWORD),
+			new ItemStack(Material.OAK_LEAVES, 64),
+			new ItemStack(Material.EGG, 8),
+			new ItemStack(Material.ENDER_PEARL, 2),
+			createPotion(Material.POTION, new PotionData(PotionType.REGEN, false, false)),
+			createPotion(Material.POTION, new PotionData(PotionType.NIGHT_VISION, true, false)),
+			createPotion(Material.SPLASH_POTION, new PotionData(PotionType.INSTANT_DAMAGE, false, true)),
+			createPotion(Material.LINGERING_POTION, new PotionData(PotionType.POISON, false, false)),
+			createPotion(Material.POTION, new PotionData(PotionType.INVISIBILITY, false, false)),
 			new ItemStack(Material.STONE_PICKAXE)
 		);
 	public static final PlayerKit BERSERKER_KIT = new PlayerKit(
@@ -52,6 +74,8 @@ public final class PlayerKits {
 			new ItemStack(Material.EGG, 16),
 			new ItemStack(Material.TNT, 4)
 		);
+	
+	public static final List<PlayerKit> KITS = Arrays.asList(SWORD_KIT, BOW_KIT, BOMBER_KIT, BREWER_KIT, BERSERKER_KIT);
 	
 	private PlayerKits () {
 		
