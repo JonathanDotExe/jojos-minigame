@@ -17,6 +17,7 @@ public class CaveStructure implements GameStructure {
 	
 	public CaveStructure() {
 		spreader = new VillageSpreader(new House(Material.STONE_BRICKS, Material.STONE_BRICKS));
+		spreader.setStepMultiplier(0.25f);
 		spreader.setForceHeight(true);
 		spreader.setBlockFunction(b -> Material.AIR);
 		spreader.setPathGenerator(new TunnelPathGenerator());

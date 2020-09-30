@@ -42,6 +42,7 @@ public final class PlayerKits {
 			new ItemStack(Material.STICK, 16),
 			new ItemStack(Material.SNOWBALL, 8)
 		);
+	
 	public static final PlayerKit BOMBER_KIT = new PlayerKit(
 			new ItemStack(Material.GOLDEN_HOE),
 			new ItemStack(Material.ICE, 32),
