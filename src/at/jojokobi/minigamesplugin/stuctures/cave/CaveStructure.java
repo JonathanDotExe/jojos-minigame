@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import at.jojokobi.mcutil.generation.population.TunnelPathGenerator;
 import at.jojokobi.mcutil.generation.population.VillageSpreader;
 import at.jojokobi.minigamesplugin.stuctures.GameStructure;
-import at.jojokobi.minigamesplugin.stuctures.House;
 
 
 public class CaveStructure implements GameStructure {
@@ -16,7 +15,7 @@ public class CaveStructure implements GameStructure {
 	private VillageSpreader spreader;
 	
 	public CaveStructure() {
-		spreader = new VillageSpreader(new House(Material.STONE_BRICKS, Material.STONE_BRICKS));
+		spreader = new VillageSpreader(new LootRoom());
 		spreader.setStepMultiplier(0.25f);
 		spreader.setForceHeight(true);
 		spreader.setBlockFunction(b -> Material.AIR);
