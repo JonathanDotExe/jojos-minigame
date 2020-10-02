@@ -26,17 +26,8 @@ public class KitRoom extends GameStructureBase{
 		//Clear
 		place.add(1, 1, 1);
 		BasicGenUtil.generateCube(place, Material.AIR, getWidth(), getHeight(), getLength());
-		//Crafting table
-		place.getBlock().setType(Material.CRAFTING_TABLE);
-		//Furnace
-		place.add(1, 0, 0);
-		place.getBlock().setType(Material.FURNACE);
-		//Torch
-		place.add(0, 1, 0);
-		place.getBlock().setType(Material.TORCH);
-		place.add(0, -1, 0);
 		//Chest
-		place.add(1, 0, 0);
+		place.add(getWidth()/2, 0, getLength()/2);
 		place.getBlock().setType(Material.CHEST);
 		PlayerKit kit = PlayerKits.KITS.get(random.nextInt(PlayerKits.KITS.size()));
 		kit.give(((Chest) place.getBlock().getState()).getBlockInventory());
