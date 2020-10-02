@@ -1,4 +1,4 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 import at.jojokobi.minigamesplugin.util.StaticUtils;
 
 public abstract class DamageEventComponent implements GameComponent {

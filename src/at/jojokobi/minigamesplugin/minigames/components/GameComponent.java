@@ -1,6 +1,8 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import org.bukkit.event.Listener;
+
+import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 
 public interface GameComponent extends Listener{
 	

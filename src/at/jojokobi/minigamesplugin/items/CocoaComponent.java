@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
-import at.jojokobi.minigamesplugin.minigames.GameComponent;
+import at.jojokobi.minigamesplugin.minigames.components.GameComponent;
 
 public class CocoaComponent implements GameComponent{
 	

@@ -18,6 +18,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.maps.MultiTickTask;
+import at.jojokobi.minigamesplugin.minigames.components.GameComponent;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.util.Area;
@@ -176,7 +177,7 @@ public abstract class BaseMinigame implements Minigame {
 		return generator.generate(gameArea);
 	}
 	
-	protected List<Player> determinePlayers () {
+	public List<Player> determinePlayers () {
 		return gameArea.getPos().getWorld().getPlayers();
 	}
 	
@@ -190,6 +191,18 @@ public abstract class BaseMinigame implements Minigame {
 	protected void resetPlayers (List<Player> players) {
 		for (Player player : players) {
 			resetPlayer(player);
+		}
+	}
+	
+	public void sendGameTitle (String title, String subtitle, int fadeIn, int duration, int fadeOut) {
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendTitle(title, subtitle, fadeIn, duration, fadeOut);
+		}
+	}
+	
+	public void sendGameMessage (String message) {
+		for (Player player : getScoreboard().getOnlinePlayers()) {
+			player.sendMessage(message);
 		}
 	}
 	

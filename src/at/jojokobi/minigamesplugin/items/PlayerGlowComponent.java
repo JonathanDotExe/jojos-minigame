@@ -6,7 +6,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
-import at.jojokobi.minigamesplugin.minigames.GameComponent;
+import at.jojokobi.minigamesplugin.minigames.components.GameComponent;
 
 public class PlayerGlowComponent implements GameComponent{
 

@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import at.jojokobi.mcutil.entity.NMSEntityUtil;
 import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
-import at.jojokobi.minigamesplugin.minigames.GameComponent;
+import at.jojokobi.minigamesplugin.minigames.components.GameComponent;
 
 public class UnstableTNTComponent implements GameComponent{
 

@@ -1,4 +1,4 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
+import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 
 public class MapSwitchComponent implements GameComponent{
 	

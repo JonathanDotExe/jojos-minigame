@@ -1,4 +1,4 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -9,6 +9,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import at.jojokobi.minigamesplugin.MinigamesPlugin;
+import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 
 public class ChatRangeComponent implements GameComponent{
 

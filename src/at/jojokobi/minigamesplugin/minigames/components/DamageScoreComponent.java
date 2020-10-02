@@ -1,4 +1,4 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import java.util.function.BiFunction;
 

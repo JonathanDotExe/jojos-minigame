@@ -13,12 +13,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.items.CocoaComponent;
 import at.jojokobi.minigamesplugin.items.FreezeHoeComponent;
-import at.jojokobi.minigamesplugin.items.PlayerGlowComponent;
 import at.jojokobi.minigamesplugin.items.RabbitFootComponent;
 import at.jojokobi.minigamesplugin.items.SnowballComponent;
 import at.jojokobi.minigamesplugin.items.SpectralArrowComponent;
@@ -27,11 +27,11 @@ import at.jojokobi.minigamesplugin.items.UnstableTNTComponent;
 import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.kits.PlayerKit;
 import at.jojokobi.minigamesplugin.kits.PlayerKits;
-import at.jojokobi.minigamesplugin.maps.ForestMapGenerator;
-import at.jojokobi.minigamesplugin.maps.JungleMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
-import at.jojokobi.minigamesplugin.maps.OceanMapGenerator;
-import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
+import at.jojokobi.minigamesplugin.minigames.components.ChatRangeComponent;
+import at.jojokobi.minigamesplugin.minigames.components.ClimbComponent;
+import at.jojokobi.minigamesplugin.minigames.components.MeetingButtonComponent;
+import at.jojokobi.minigamesplugin.minigames.components.StrengthComponent;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
@@ -49,6 +49,8 @@ public class MurdererMinigame extends BaseMinigame{
 	
 	private CustomTeam murdererTeam;
 	private CustomTeam innocentTeam;
+	
+	private MeetingButtonComponent meetingComponent;
 
 	
 	public MurdererMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
@@ -67,10 +69,10 @@ public class MurdererMinigame extends BaseMinigame{
 		addComponent(new CocoaComponent());
 		
 		addComponent(new ClimbComponent());
-		addComponent(new PlayerGlowComponent());
+		meetingComponent = new MeetingButtonComponent();
+		addComponent(meetingComponent);
 		addComponent(new ChatRangeComponent());
 		addComponent(new StrengthComponent());
-		addComponent(new MapSwitchComponent(Arrays.asList(new ForestMapGenerator(), new SnowMapGenerator(), new OceanMapGenerator(), new JungleMapGenerator())));
 		super.init(plugin);
 	}
 	
@@ -136,7 +138,7 @@ public class MurdererMinigame extends BaseMinigame{
 	public void onEntityDamage (EntityDamageEvent event) {
 		if (getGameArea().getPos().getWorld().getPlayers().contains(event.getEntity())) {
 			//Prevent damage in protection time
-			if (!isRunning() || getTime() < protectionTime) {
+			if (!isRunning() || getTime() < protectionTime || meetingComponent.isMeeting()) {
 				event.setDamage(0);
 			}
 			else if (event.getEntity() instanceof Player && getScoreboard() != null && getScoreboard().getOnlinePlayers().contains(event.getEntity())){
@@ -181,6 +183,13 @@ public class MurdererMinigame extends BaseMinigame{
 	}
 	
 	@EventHandler
+	public void onPlayerMove (PlayerMoveEvent event) {
+		if (getGameArea().getPos().getWorld().getPlayers().contains(event.getPlayer()) && isRunning() && meetingComponent.isMeeting()) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
 	public void onPlayerJoin (PlayerJoinEvent event) {
 		if (event.getPlayer().getWorld() == getGameArea().getPos().getWorld()) {
 			if (!isRunning()) {
@@ -190,18 +199,6 @@ public class MurdererMinigame extends BaseMinigame{
 			else {
 				event.getPlayer().kickPlayer("Sorry a round of Murderer is already running!");
 			}
-		}
-	}
-	
-	private void sendGameTitle (String title, String subtitle, int fadeIn, int duration, int fadeOut) {
-		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.sendTitle(title, subtitle, fadeIn, duration, fadeOut);
-		}
-	}
-	
-	private void sendGameMessage (String message) {
-		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.sendMessage(message);
 		}
 	}
 

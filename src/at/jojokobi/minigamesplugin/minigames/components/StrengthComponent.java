@@ -1,8 +1,10 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 
 public class StrengthComponent implements GameComponent {
 

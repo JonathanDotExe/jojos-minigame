@@ -1,4 +1,4 @@
-package at.jojokobi.minigamesplugin.minigames;
+package at.jojokobi.minigamesplugin.minigames.components;
 
 import java.util.Random;
 import java.util.Set;
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
+
+import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 
 public class ClimbComponent implements GameComponent {
 	

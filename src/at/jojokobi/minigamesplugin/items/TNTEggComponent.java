@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerEggThrowEvent;
 
 import at.jojokobi.mcutil.entity.NMSEntityUtil;
 import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
-import at.jojokobi.minigamesplugin.minigames.GameComponent;
+import at.jojokobi.minigamesplugin.minigames.components.GameComponent;
 
 public class TNTEggComponent implements GameComponent {
 

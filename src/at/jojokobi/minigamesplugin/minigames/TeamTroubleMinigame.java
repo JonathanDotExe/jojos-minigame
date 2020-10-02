@@ -27,6 +27,9 @@ import at.jojokobi.minigamesplugin.maps.JungleMapGenerator;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.maps.OceanMapGenerator;
 import at.jojokobi.minigamesplugin.maps.SnowMapGenerator;
+import at.jojokobi.minigamesplugin.minigames.components.ClimbComponent;
+import at.jojokobi.minigamesplugin.minigames.components.DamageScoreComponent;
+import at.jojokobi.minigamesplugin.minigames.components.MapSwitchComponent;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
@@ -177,12 +180,6 @@ public class TeamTroubleMinigame extends BaseMinigame{
 			else {
 				event.getPlayer().kickPlayer("Sorry a round of Team Trouble is already running!");
 			}
-		}
-	}
-	
-	private void sendGameTitle (String title, String subtitle, int fadeIn, int duration, int fadeOut) {
-		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.sendTitle(title, subtitle, fadeIn, duration, fadeOut);
 		}
 	}
 
