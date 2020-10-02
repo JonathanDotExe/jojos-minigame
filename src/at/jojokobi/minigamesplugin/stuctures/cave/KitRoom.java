@@ -22,7 +22,10 @@ public class KitRoom extends GameStructureBase{
 		Location place = loc.clone();
 		place.add(-1, -1, -1);
 		//Walls
-		BasicGenUtil.generateCube(place, Material.STONE_BRICKS, b -> b.getType() != Material.AIR, null, getWidth() + 2, getHeight() + 2, getLength() + 2);
+		BasicGenUtil.generateCube(place, Material.PRISMARINE_BRICKS, b -> b.getType() != Material.AIR, b -> {
+			if (random.nextInt(4) == 0) {
+				b.setType(Material.SEA_LANTERN);
+			}}, getWidth() + 2, getHeight() + 2, getLength() + 2);
 		//Clear
 		place.add(1, 1, 1);
 		BasicGenUtil.generateCube(place, Material.AIR, getWidth(), getHeight(), getLength());
