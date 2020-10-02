@@ -15,6 +15,7 @@ public class ChatRangeComponent implements GameComponent{
 
 	private BaseMinigame game;
 	private double range = 10;
+	private boolean active = true;
 	
 	@Override
 	public void init(BaseMinigame game) {
@@ -23,7 +24,7 @@ public class ChatRangeComponent implements GameComponent{
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		if (game.isRunning() && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer())) {
+		if (active && game.isRunning() && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer())) {
 			//Cancel chat
 			event.setCancelled(true);
 			Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(MinigamesPlugin.class) /*TODO injet minigame plugin*/, () -> {
@@ -44,6 +45,14 @@ public class ChatRangeComponent implements GameComponent{
 				}
 			});
 		}
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override

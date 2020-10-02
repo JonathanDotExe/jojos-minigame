@@ -69,9 +69,10 @@ public class MurdererMinigame extends BaseMinigame{
 		addComponent(new CocoaComponent());
 		
 		addComponent(new ClimbComponent());
-		meetingComponent = new MeetingButtonComponent();
+		ChatRangeComponent chat= new ChatRangeComponent();
+		addComponent(chat);
+		meetingComponent = new MeetingButtonComponent(chat);
 		addComponent(meetingComponent);
-		addComponent(new ChatRangeComponent());
 		addComponent(new StrengthComponent());
 		super.init(plugin);
 	}

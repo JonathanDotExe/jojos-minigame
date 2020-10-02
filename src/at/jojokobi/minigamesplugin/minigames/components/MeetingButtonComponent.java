@@ -15,7 +15,14 @@ public class MeetingButtonComponent implements GameComponent {
 	private int endTimestamp = 0;
 	
 	private BaseMinigame game;
+	private ChatRangeComponent chat;
 	
+	
+	public MeetingButtonComponent(ChatRangeComponent chat) {
+		super();
+		this.chat = chat;
+	}
+
 	@Override
 	public void init(BaseMinigame game) {
 		this.game = game;
@@ -27,6 +34,7 @@ public class MeetingButtonComponent implements GameComponent {
 			timeout = game.getTime() + timeoutDuration;
 			endTimestamp = game.getTime() + duration;
 			game.sendGameTitle(Color.RED + "A team meeting has been called", "by " + event.getPlayer().getDisplayName(), 10, 80, 10);
+			chat.setActive(false);
 		}
 	}
 	
@@ -38,12 +46,14 @@ public class MeetingButtonComponent implements GameComponent {
 	public void start() {
 		timeout = -1;
 		endTimestamp = -1;
+		chat.setActive(true);
 	}
 
 	@Override
 	public void update() {
 		if (game.getTime() == endTimestamp) {
 			game.sendGameTitle(Color.RED + "The meeting has ended", "", 10, 80, 10);
+			chat.setActive(true);
 		}
 	}
 
@@ -59,7 +69,7 @@ public class MeetingButtonComponent implements GameComponent {
 
 	@Override
 	public void startLobby() {
-		
+		chat.setActive(true);
 	}
 
 }
