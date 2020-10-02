@@ -22,8 +22,8 @@ public class CaveStructure implements GameStructure {
 		spreader.setPathGenerator(new TunnelPathGenerator());
 		spreader.setUnitHeight(16);
 		spreader.setUnitHeight(16);
-		spreader.setWidth(width/4);
-		spreader.setHeight(height/4);
+		spreader.setWidth(width/16);
+		spreader.setHeight(height/16);
 	}
 
 	@Override

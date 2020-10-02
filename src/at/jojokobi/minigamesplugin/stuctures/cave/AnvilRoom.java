@@ -35,7 +35,7 @@ public class AnvilRoom extends GameStructureBase{
 		place.getBlock().setType(Material.LAVA);
 		place.add(0, 0, -getLength() + 1);
 		//Anvil
-		place.add(getWidth()/2, 0, getLength()/2);
+		place.add(getWidth()/2, 1, getLength()/2);
 		place.getBlock().setType(Material.ANVIL);
 	}
 	
