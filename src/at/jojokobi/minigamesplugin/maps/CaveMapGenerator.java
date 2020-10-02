@@ -45,7 +45,7 @@ public class CaveMapGenerator implements MapGenerator {
 		
 		//Cave
 		task.add(() -> {
-			CaveStructure cave = new CaveStructure();
+			CaveStructure cave = new CaveStructure((int) area.getWidth(), (int) area.getLength());
 			cave.generate(area.getPos().clone().add(0, 8, 0), random);
 		});
 		

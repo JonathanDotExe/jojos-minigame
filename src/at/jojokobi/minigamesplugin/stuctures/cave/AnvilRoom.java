@@ -20,9 +20,20 @@ public class AnvilRoom extends GameStructureBase{
 		place.add(-1, -1, -1);
 		//Walls
 		BasicGenUtil.generateCube(place, Material.STONE_BRICKS, b -> b.getType() != Material.AIR, null, getWidth() + 2, getHeight() + 2, getLength() + 2);
+		BasicGenUtil.generateCube(place, Material.IRON_BARS, Material.AIR, null, getWidth() + 2, getHeight() + 2, getLength() + 2);
 		//Clear
 		place.add(1, 1, 1);
 		BasicGenUtil.generateCube(place, Material.AIR, getWidth(), getHeight(), getLength());
+		//Lava
+		place.add(0, -1, 0);
+		place.getBlock().setType(Material.LAVA);
+		place.add(getWidth() - 1, 0, 0);
+		place.getBlock().setType(Material.LAVA);
+		place.add(0, 0, getLength() - 1);
+		place.getBlock().setType(Material.LAVA);
+		place.add(- getWidth() + 1, 0, 0);
+		place.getBlock().setType(Material.LAVA);
+		place.add(0, 0, -getLength() + 1);
 		//Anvil
 		place.add(getWidth()/2, 0, getLength()/2);
 		place.getBlock().setType(Material.ANVIL);

@@ -39,7 +39,7 @@ public class MinigamesPlugin extends JavaPlugin{
 			World world = this.getServer().createWorld(generator);
 			world.setSpawnLocation(32, 70, 32);
 			world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-			handler.add(new MurdererMinigame(new CaveMapGenerator(), new SimpleLobbyGenerator(), new Area(new Location(world, 0, 0, 0), 64, 256,64)));
+			handler.add(new MurdererMinigame(new CaveMapGenerator(), new SimpleLobbyGenerator(), new Area(new Location(world, 0, 0, 0), 128, 256, 128)));
 		}
 		
 		handler.start(this);

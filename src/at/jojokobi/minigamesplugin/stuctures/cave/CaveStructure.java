@@ -14,16 +14,16 @@ public class CaveStructure implements GameStructure {
 	
 	private VillageSpreader spreader;
 	
-	public CaveStructure() {
+	public CaveStructure(int width, int height) {
 		spreader = new VillageSpreader(new LootRoom(), new LootRoom(), new KitRoom(), new AnvilRoom());
-		spreader.setStepMultiplier(0.25f);
+		spreader.setStepMultiplier(0.5f);
 		spreader.setForceHeight(true);
 		spreader.setBlockFunction(b -> Material.AIR);
 		spreader.setPathGenerator(new TunnelPathGenerator());
 		spreader.setUnitHeight(16);
 		spreader.setUnitHeight(16);
-		spreader.setWidth(4);
-		spreader.setHeight(4);
+		spreader.setWidth(width/4);
+		spreader.setHeight(height/4);
 	}
 
 	@Override
