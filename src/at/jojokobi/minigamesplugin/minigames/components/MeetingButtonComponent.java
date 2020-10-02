@@ -1,6 +1,6 @@
 package at.jojokobi.minigamesplugin.minigames.components;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -9,8 +9,8 @@ import at.jojokobi.minigamesplugin.minigames.BaseMinigame;
 
 public class MeetingButtonComponent implements GameComponent {
 
-	private int duration = 30;
-	private int timeoutDuration = 60;
+	private int duration = 30 * 20;
+	private int timeoutDuration = 60 * 20;
 	private int timeout = 0;
 	private int endTimestamp = 0;
 	
@@ -30,10 +30,10 @@ public class MeetingButtonComponent implements GameComponent {
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (game.getTime() >= timeout && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer()) && event.getMaterial() == Material.STONE_BUTTON && event.getClickedBlock().getRelative(1, 0, 0).getType() == Material.REDSTONE_LAMP) {
+		if (game.getTime() >= timeout && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer()) && event.getClickedBlock().getType() == Material.STONE_BUTTON && event.getClickedBlock().getRelative(0, 0, 1).getType() == Material.REDSTONE_LAMP) {
 			timeout = game.getTime() + timeoutDuration;
 			endTimestamp = game.getTime() + duration;
-			game.sendGameTitle(Color.RED + "A team meeting has been called", "by " + event.getPlayer().getDisplayName(), 10, 80, 10);
+			game.sendGameTitle(ChatColor.RED + "A team meeting has been called", "by " + event.getPlayer().getDisplayName(), 10, 80, 10);
 			chat.setActive(false);
 		}
 	}
@@ -52,7 +52,7 @@ public class MeetingButtonComponent implements GameComponent {
 	@Override
 	public void update() {
 		if (game.getTime() == endTimestamp) {
-			game.sendGameTitle(Color.RED + "The meeting has ended", "", 10, 80, 10);
+			game.sendGameTitle(ChatColor.RED + "The meeting has ended", "", 10, 80, 10);
 			chat.setActive(true);
 		}
 	}
