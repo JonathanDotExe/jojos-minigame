@@ -1,13 +1,19 @@
 package at.jojokobi.minigamesplugin.minigames;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import at.jojokobi.minigamesplugin.MinigamesPlugin;
 
 public class ChatRangeComponent implements GameComponent{
 
 	private BaseMinigame game;
-	private double range;
+	private double range = 10;
 	
 	@Override
 	public void init(BaseMinigame game) {
@@ -17,12 +23,25 @@ public class ChatRangeComponent implements GameComponent{
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
 		if (game.isRunning() && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer())) {
+			//Cancel chat
 			event.setCancelled(true);
-			for (Entity e : event.getPlayer().getNearbyEntities(range, range, range)) {
-				if (event.getRecipients().contains(e) || e == event.getPlayer()) {
-					e.sendMessage("<" + event.getPlayer() + "> " + event.getMessage());
+			Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(MinigamesPlugin.class) /*TODO injet minigame plugin*/, () -> {
+				//Survival
+				if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+					for (Entity e : event.getPlayer().getNearbyEntities(range, range, range)) {
+						if ((event.getRecipients().contains(e) && ((Player) e).getGameMode() == GameMode.SURVIVAL)) {
+							e.sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+						}
+					}
+					event.getPlayer().sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
 				}
-			}
+				//All except survival
+				for (Player player : event.getRecipients()) {
+					if (player.getGameMode() != GameMode.SURVIVAL) {
+						player.sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+					}
+				}
+			});
 		}
 	}
 
