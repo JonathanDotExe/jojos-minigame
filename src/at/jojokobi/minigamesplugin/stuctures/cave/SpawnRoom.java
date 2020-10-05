@@ -38,9 +38,9 @@ public class SpawnRoom extends GameStructureBase{
 		//Wood planks
 		place.add(0, 9, 0);
 		BasicGenUtil.generateCube(place, Material.OAK_PLANKS, getWidth(), 1, getLength());
-		place.add(1, 0, 1);
-		BasicGenUtil.generateCube(place, Material.AIR, getWidth() - 2, 1, getLength() - 2);
-		place.add(-1, -9, -1);
+		place.add(2, 0, 2);
+		BasicGenUtil.generateCube(place, Material.AIR, getWidth() - 4, 1, getLength() - 4);
+		place.add(-2, -9, -2);
 		//Ladder
 		place.add(1, 0, getLength() - 1);
 		BasicGenUtil.generateCube(place, Material.LADDER, 1, getHeight(), 1);

@@ -30,7 +30,7 @@ public class MeetingButtonComponent implements GameComponent {
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (game.getTime() >= timeout && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer()) && event.getClickedBlock().getType() == Material.STONE_BUTTON && event.getClickedBlock().getRelative(0, 0, 1).getType() == Material.REDSTONE_LAMP) {
+		if (game.getTime() >= timeout && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer()) && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.STONE_BUTTON && event.getClickedBlock().getRelative(0, 0, 1).getType() == Material.REDSTONE_LAMP) {
 			timeout = game.getTime() + timeoutDuration;
 			endTimestamp = game.getTime() + duration;
 			game.sendGameTitle(ChatColor.RED + "A team meeting has been called", "by " + event.getPlayer().getDisplayName(), 10, 80, 10);
