@@ -5,8 +5,8 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import at.jojokobi.mcutil.generation.BasicGenUtil;
 import at.jojokobi.mcutil.generation.population.TunnelPathGenerator;
+import at.jojokobi.mcutil.generation.population.VillageNode;
 import at.jojokobi.mcutil.generation.population.VillageSpreader;
 import at.jojokobi.minigamesplugin.stuctures.GameStructure;
 
@@ -43,10 +43,15 @@ public class CaveStructure implements GameStructure {
 
 	@Override
 	public void generate(Location loc, Random random) {
-		Location centerPlace = loc.clone().add(lowerSpreader.getWidth()/2 * lowerSpreader.getUnitWidth() - lowerSpreader.getUnitWidth()/2, 0, lowerSpreader.getHeight()/2 * lowerSpreader.getUnitHeight() - lowerSpreader.getUnitHeight()/2);
-		BasicGenUtil.generateCube(centerPlace.add(-2, 0, -2), Material.AIR, 4, 10, 4);
-		lowerSpreader.generateVillage(random, random.nextLong(), loc);
+		/*Location centerPlace = loc.clone().add(lowerSpreader.getWidth()/2 * lowerSpreader.getUnitWidth() - lowerSpreader.getUnitWidth()/2, 0, lowerSpreader.getHeight()/2 * lowerSpreader.getUnitHeight() - lowerSpreader.getUnitHeight()/2);
+		BasicGenUtil.generateCube(centerPlace.add(-2, 0, -2), Material.AIR, 4, 10, 4);*/		
+		VillageNode[][] upper = upperSpreader.generateVillageMap(random);
+		upper[upper.length/2][upper[upper.length/2].length/2].setHouse(null);
 		upperSpreader.generateVillage(random, random.nextLong(), loc.clone().add(0, 10, 0));
+		
+		VillageNode[][] lower = lowerSpreader.generateVillageMap(random);
+		lower[lower.length/2][lower[lower.length/2].length/2].setHouse(new SpawnRoom());
+		lowerSpreader.generateVillage(lower, random.nextLong(), loc);
 	}
 
 }

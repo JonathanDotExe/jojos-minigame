@@ -84,7 +84,7 @@ public class MurdererMinigame extends BaseMinigame{
 		Random random = new Random();
 		//Teleport player to spawn
 		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.teleport(getGameArea().getPos().clone().add((int) (getGameArea().getWidth()/32) * 16 - 8, 8, (int) (getGameArea().getLength()/32) * 16 - 8));
+			player.teleport(getGameArea().getPos().clone().add((int) (getGameArea().getWidth()/32) * 16 + 8, 8, (int) (getGameArea().getLength()/32) * 16 + 8));
 		}
 		resetPlayers(getScoreboard().getOnlinePlayers());
 
