@@ -30,6 +30,7 @@ import at.jojokobi.minigamesplugin.kits.PlayerKits;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.minigames.components.ChatRangeComponent;
 import at.jojokobi.minigamesplugin.minigames.components.ClimbComponent;
+import at.jojokobi.minigamesplugin.minigames.components.IndestructableBlockComponent;
 import at.jojokobi.minigamesplugin.minigames.components.MeetingButtonComponent;
 import at.jojokobi.minigamesplugin.minigames.components.StrengthComponent;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
@@ -74,6 +75,7 @@ public class MurdererMinigame extends BaseMinigame{
 		meetingComponent = new MeetingButtonComponent(chat);
 		addComponent(meetingComponent);
 		addComponent(new StrengthComponent());
+		addComponent(new IndestructableBlockComponent(b -> b.getState() instanceof Sign));
 		super.init(plugin);
 	}
 	
