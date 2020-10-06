@@ -42,9 +42,7 @@ public class CaveStructure implements GameStructure {
 	}
 
 	@Override
-	public void generate(Location loc, Random random) {
-		/*Location centerPlace = loc.clone().add(lowerSpreader.getWidth()/2 * lowerSpreader.getUnitWidth() - lowerSpreader.getUnitWidth()/2, 0, lowerSpreader.getHeight()/2 * lowerSpreader.getUnitHeight() - lowerSpreader.getUnitHeight()/2);
-		BasicGenUtil.generateCube(centerPlace.add(-2, 0, -2), Material.AIR, 4, 10, 4);*/		
+	public void generate(Location loc, Random random) {	
 		VillageNode[][] upper = upperSpreader.generateVillageMap(random);
 		upper[upper.length/2][upper[upper.length/2].length/2].setHouse(null);
 		upperSpreader.generateVillage(random, random.nextLong(), loc.clone().add(0, 10, 0));
