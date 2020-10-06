@@ -29,7 +29,7 @@ public class CaveStructure implements GameStructure {
 			lowerSpreader.setHeight(height/16);
 		}
 		{
-			upperSpreader = new VillageSpreader(new LootRoom(), new LootRoom(), new KitRoom(), new KitRoom(), new KitRoom(), new MeetingRoom(), new MeetingRoom());
+			upperSpreader = new VillageSpreader(new LootRoom(), new LootRoom(), new KitRoom(), new MeetingRoom(), new WaterRoom());
 			upperSpreader.setStepMultiplier(0.5f);
 			upperSpreader.setForceHeight(true);
 			upperSpreader.setBlockFunction(b -> Material.AIR);
