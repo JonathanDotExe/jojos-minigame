@@ -24,22 +24,31 @@ public class ChatRangeComponent implements GameComponent{
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		if (active && game.isRunning() && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer())) {
+		if (game.isRunning() && game.getScoreboard() != null && game.getScoreboard().getPlayers().contains(event.getPlayer())) {
 			//Cancel chat
 			event.setCancelled(true);
-			Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(MinigamesPlugin.class) /*TODO injet minigame plugin*/, () -> {
+			Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(MinigamesPlugin.class) /*TODO inject minigame plugin*/, () -> {
 				//Survival
 				if (event.getPlayer().getGameMode() == GameMode.SURVIVAL) {
-					for (Entity e : event.getPlayer().getNearbyEntities(range, range, range)) {
-						if ((event.getRecipients().contains(e) && ((Player) e).getGameMode() == GameMode.SURVIVAL)) {
-							e.sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+					if (active) {
+						for (Entity e : event.getPlayer().getNearbyEntities(range, range, range)) {
+							if ((event.getRecipients().contains(e) && ((Player) e).getGameMode() == GameMode.SURVIVAL)) {
+								e.sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+							}
+						}
+						event.getPlayer().sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+					}
+					else {
+						for (Player player : game.getScoreboard().getOnlinePlayers()) {
+							if (event.getRecipients().contains(player) && player.getGameMode() == GameMode.SURVIVAL) {
+								player.sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
+							}
 						}
 					}
-					event.getPlayer().sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
 				}
 				//All except survival
-				for (Player player : event.getRecipients()) {
-					if (player.getGameMode() != GameMode.SURVIVAL) {
+				for (Player player : game.getScoreboard().getOnlinePlayers()) {
+					if (event.getRecipients().contains(player) && player.getGameMode() != GameMode.SURVIVAL) {
 						player.sendMessage("<" + event.getPlayer().getDisplayName() + "> " + event.getMessage());
 					}
 				}
