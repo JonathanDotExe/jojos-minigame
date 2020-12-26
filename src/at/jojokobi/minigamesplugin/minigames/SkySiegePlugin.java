@@ -1,19 +1,15 @@
 package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -28,16 +24,11 @@ import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.kits.PlayerKit;
 import at.jojokobi.minigamesplugin.kits.PlayerKits;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
-import at.jojokobi.minigamesplugin.minigames.components.ChatRangeComponent;
 import at.jojokobi.minigamesplugin.minigames.components.ClimbComponent;
-import at.jojokobi.minigamesplugin.minigames.components.IndestructableBlockComponent;
-import at.jojokobi.minigamesplugin.minigames.components.MeetingButtonComponent;
 import at.jojokobi.minigamesplugin.minigames.components.StrengthComponent;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
-import at.jojokobi.minigamesplugin.scoreboard.CustomTeam;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
 import at.jojokobi.minigamesplugin.util.Area;
-import at.jojokobi.minigamesplugin.util.StaticUtils;
 
 public class SkySiegePlugin extends BaseMinigame{
 
