@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Scoreboard;
 
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
@@ -224,14 +225,16 @@ public abstract class BaseMinigame implements Minigame {
 		player.setGameMode(GameMode.SURVIVAL);
 		player.setSaturation(0);
 		player.setExhaustion(0);
-		player.setRemainingAir(10);
+		player.setRemainingAir(20);
 		player.setFoodLevel(20);
 		player.setFireTicks(0);
 		player.setFallDistance(0);
 		player.getInventory().clear();
 		player.setExp(0);
 		player.setLevel(0);
-		player.remo
+		for (PotionEffect e : player.getActivePotionEffects()) {
+			player.removePotionEffect(e.getType());
+		}
 	}
 
 	public MapGenerator getGenerator() {
