@@ -106,9 +106,7 @@ public class SkySiegeMinigame extends BaseMinigame{
 	public void start() {
 		Random random = new Random();
 		//Teleport player to spawn
-		for (Player player : getScoreboard().getOnlinePlayers()) {
-			player.teleport(getGameArea().getPos().clone().add((int) (getGameArea().getWidth()/32) * 16 + 8, 8, (int) (getGameArea().getLength()/32) * 16 + 8));
-		}
+		spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 		resetPlayers(getScoreboard().getOnlinePlayers());
 
 		for (Player player : getScoreboard().getOnlinePlayers()) {
@@ -158,7 +156,7 @@ public class SkySiegeMinigame extends BaseMinigame{
 		Random random = new Random();
 		for (Player player : players) {
 			Location loc = gameArea.getPos().clone().add(random.nextInt((int) gameArea.getWidth()/ISLAND_GRID_STEP) * ISLAND_GRID_STEP, 0, random.nextInt((int) gameArea.getLength()/ISLAND_GRID_STEP) * ISLAND_GRID_STEP);
-			loc.setY(loc.getWorld().getHighestBlockYAt(loc));
+			loc.setY(loc.getWorld().getHighestBlockYAt(loc) + 1);
 			player.teleport(loc);
 		}
 	}
