@@ -7,12 +7,9 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Scoreboard;
@@ -150,17 +147,6 @@ public abstract class BaseMinigame implements Minigame {
 	public abstract void initScoreboard (CustomScoreboard scoreboard);
 	
 	public abstract Winner determineWinner ();
-	
-	@EventHandler
-	public void onPlayerMove (PlayerMoveEvent event) {
-		Location to = event.getTo();
-		if (to.getY() < 0){
-			Random random = new Random();
-			Location place = new Location(to.getWorld(), random.nextInt(60) - 30, 100, random.nextInt(60) - 30);
-			place.setY(place.getWorld().getHighestBlockYAt(place) + 1);
-			event.setTo(place);
-		}
-	}
 	
 	protected void setTeam (OfflinePlayer player, CustomTeam team) {
 		scoreboard.setTeam(player, team, scoreboardView);

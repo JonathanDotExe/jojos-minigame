@@ -217,16 +217,20 @@ public class SkySiegeMinigame extends BaseMinigame{
 		}
 	}
 	
-	@Override
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		//let player die when they fall down
 		//TODO sideeffects in the future maybe
 		if (!isRunning()) {
-			super.onPlayerMove(event);
+			Location to = event.getTo();
+			if (to.getY() < 0){
+				Random random = new Random();
+				Location place = new Location(to.getWorld(), random.nextInt(60) - 30, 100, random.nextInt(60) - 30);
+				place.setY(place.getWorld().getHighestBlockYAt(place) + 1);
+				event.setTo(place);
+			}
 		}
 	}
-	
-	
+
 
 }

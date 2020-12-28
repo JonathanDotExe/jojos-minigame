@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -189,6 +190,14 @@ public class MurdererMinigame extends BaseMinigame{
 	public void onPlayerMove (PlayerMoveEvent event) {
 		if (getGameArea().getPos().getWorld().getPlayers().contains(event.getPlayer()) && isRunning() && meetingComponent.isMeeting()) {
 			event.setCancelled(true);
+		}
+		
+		Location to = event.getTo();
+		if (to.getY() < 0){
+			Random random = new Random();
+			Location place = new Location(to.getWorld(), random.nextInt(60) - 30, 100, random.nextInt(60) - 30);
+			place.setY(place.getWorld().getHighestBlockYAt(place) + 1);
+			event.setTo(place);
 		}
 	}
 	

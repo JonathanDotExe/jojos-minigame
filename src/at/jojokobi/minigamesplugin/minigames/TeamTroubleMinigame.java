@@ -2,14 +2,17 @@ package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
@@ -99,6 +102,17 @@ public class TeamTroubleMinigame extends BaseMinigame{
 	@Override
 	public void end() {
 		
+	}
+	
+	@EventHandler
+	public void onPlayerMove (PlayerMoveEvent event) {
+		Location to = event.getTo();
+		if (to.getY() < 0){
+			Random random = new Random();
+			Location place = new Location(to.getWorld(), random.nextInt(60) - 30, 100, random.nextInt(60) - 30);
+			place.setY(place.getWorld().getHighestBlockYAt(place) + 1);
+			event.setTo(place);
+		}
 	}
 
 	@Override
