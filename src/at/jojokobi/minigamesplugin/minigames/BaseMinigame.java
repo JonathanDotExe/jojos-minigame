@@ -231,6 +231,7 @@ public abstract class BaseMinigame implements Minigame {
 		player.getInventory().clear();
 		player.setExp(0);
 		player.setLevel(0);
+		player.remo
 	}
 
 	public MapGenerator getGenerator() {

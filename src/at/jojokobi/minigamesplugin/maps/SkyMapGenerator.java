@@ -43,7 +43,7 @@ public class SkyMapGenerator implements MapGenerator {
 				int zPos = z;
 				task.add(() -> {
 					GameStructure struc = strucs.get(random.nextInt(strucs.size()));
-					struc.generate(area.getPos().add(xPos, 60, zPos), random);
+					struc.generate(area.getPos().clone().add(xPos, 60, zPos), random);
 				});
 			}
 		}

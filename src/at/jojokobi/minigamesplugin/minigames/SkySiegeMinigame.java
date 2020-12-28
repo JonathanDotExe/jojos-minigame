@@ -33,9 +33,8 @@ import at.jojokobi.minigamesplugin.util.Area;
 
 public class SkySiegeMinigame extends BaseMinigame{
 	
-	public static final int ISLAND_GRID_STEP = 16;
+	public static final int ISLAND_GRID_STEP = 32;
 
-	private int gameDuration = 30 * 60 * 20;
 	private int maxPlayers = 10;
 	private int maxWaitTime = 20 * 20;
 	
@@ -97,7 +96,7 @@ public class SkySiegeMinigame extends BaseMinigame{
 
 	@Override
 	public boolean canGameFinish() {
-		return (getTime() >= gameDuration && getScoreboard().getOnlinePlayers().stream().allMatch(p -> p.getGameMode() != GameMode.SURVIVAL));
+		return (getScoreboard().getOnlinePlayers().stream().allMatch(p -> p.getGameMode() != GameMode.SURVIVAL));
 	}
 
 	@Override
