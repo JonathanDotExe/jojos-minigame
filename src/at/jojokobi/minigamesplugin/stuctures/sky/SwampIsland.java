@@ -23,15 +23,15 @@ public class SwampIsland extends GameStructureBase {
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 3, 3, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 3, 1, 3);
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 5, 5, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 5, 1, 5);
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, 7, 7, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, 7, 1, 7);
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() + 3);
 		place.setZ(place.getZ() + 3);

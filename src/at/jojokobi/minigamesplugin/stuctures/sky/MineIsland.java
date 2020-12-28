@@ -25,34 +25,34 @@ public class MineIsland extends GameStructureBase {
 				//Leave
 			}
 			else if (num < 9){
-				place.getBlock().setType(Material.DIRT);
+				s.setType(Material.DIRT);
 			}
 			else if (num < 11){
-				place.getBlock().setType(Material.GRAVEL);
+				s.setType(Material.GRAVEL);
 			}
 			else if (num < 13){
-				place.getBlock().setType(Material.COAL_ORE);
+				s.setType(Material.COAL_ORE);
 			}
 			else if (num < 15){
-				place.getBlock().setType(Material.IRON_ORE);
+				s.setType(Material.IRON_ORE);
 			}
 			else if (num < 16){
-				place.getBlock().setType(Material.GOLD_ORE);
+				s.setType(Material.GOLD_ORE);
 			}
 			else if (num < 17){
-				place.getBlock().setType(Material.REDSTONE_ORE);
+				s.setType(Material.REDSTONE_ORE);
 			}
 			else if (num < 18){
 				if (random.nextInt(10) == 1)
-					place.getBlock().setType(Material.DIAMOND_ORE);
+					s.setType(Material.DIAMOND_ORE);
 				else
-					place.getBlock().setType(Material.COAL_ORE);
+					s.setType(Material.COAL_ORE);
 			}
 			else if (num < 19){
-				place.getBlock().setType(Material.OBSIDIAN);
+				s.setType(Material.OBSIDIAN);
 			}
 			else if (num < 20){
-				place.getBlock().setType(Material.LAPIS_ORE);
+				s.setType(Material.LAPIS_ORE);
 			}
 		};
 		BasicGenUtil.generateCube(place.clone(), Material.STONE, oreModifier, 5, 5, 5);

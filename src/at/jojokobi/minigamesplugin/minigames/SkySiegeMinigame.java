@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -96,7 +97,7 @@ public class SkySiegeMinigame extends BaseMinigame{
 
 	@Override
 	public boolean canGameFinish() {
-		return (getScoreboard().getOnlinePlayers().stream().allMatch(p -> p.getGameMode() != GameMode.SURVIVAL));
+		return (getScoreboard().getOnlinePlayers().stream().filter(p -> p.getGameMode() == GameMode.SURVIVAL).count() <= 1);
 	}
 
 	@Override
@@ -175,5 +176,16 @@ public class SkySiegeMinigame extends BaseMinigame{
 			spreadPlayers(getScoreboard().getOnlinePlayers(), getGameArea());
 		}
 	}
+	
+	@Override
+	public void onPlayerMove(PlayerMoveEvent event) {
+		//let player die when they fall down
+		//TODO sideeffects in the future maybe
+		if (!isRunning()) {
+			super.onPlayerMove(event);
+		}
+	}
+	
+	
 
 }

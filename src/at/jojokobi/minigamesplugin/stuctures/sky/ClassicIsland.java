@@ -19,13 +19,13 @@ public class ClassicIsland extends GameStructureBase {
 	public void generate(Location loc, Random random) {
 		Location place = loc.clone();
 		BasicGenUtil.generateCube(place.clone() , Material.GRASS_BLOCK, 3, 3, 3);
-		BasicGenUtil.generateCube(place.clone() , Material.DIRT, 3, 3, 2);
+		BasicGenUtil.generateCube(place.clone() , Material.DIRT, 3, 2, 3);
 		place.setX(place.getX() + 3);
 		BasicGenUtil.generateCube(place.clone() , Material.GRASS_BLOCK, 3, 3, 3);
-		BasicGenUtil.generateCube(place.clone() , Material.DIRT, 3, 3, 2);
+		BasicGenUtil.generateCube(place.clone() , Material.DIRT, 3, 2, 3);
 		place.setZ(place.getZ() + 3);
 		BasicGenUtil.generateCube(place.clone() , Material.GRASS_BLOCK, 3, 3, 3);
-		BasicGenUtil.generateCube(place.clone() , Material.DIRT, 3, 3, 2);
+		BasicGenUtil.generateCube(place.clone() , Material.DIRT, 3, 2, 3);
 		place.setY(place.getY() + 3);
 		place.getBlock().setType(Material.CHEST);
 		//TODO loot

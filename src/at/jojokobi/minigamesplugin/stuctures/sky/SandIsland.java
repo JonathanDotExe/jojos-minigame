@@ -21,7 +21,7 @@ public class SandIsland extends GameStructureBase {
 		place.setX(place.getX() + 16);
 		place.setZ(place.getZ() + 16);
 		place.setY(place.getY() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.SANDSTONE, 3, 3, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.SANDSTONE, 3, 1, 3);
 		place.setY(place.getY() + 1);
 		BasicGenUtil.generateCube(place.clone(), Material.SAND, 3, 3, 3);
 		place.setY(place.getY() + 3);

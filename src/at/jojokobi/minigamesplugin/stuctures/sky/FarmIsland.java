@@ -18,13 +18,13 @@ public class FarmIsland extends GameStructureBase {
 	@Override
 	public void generate(Location loc, Random random) {
 		Location place = loc.clone();
-		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 4, 4, 2);
+		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 4, 2, 4);
 		place.setY(place.getY() + 2);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, 6, 6, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, 6, 1, 6);
 		place.setY(place.getY() + 1);
-		BasicGenUtil.generateCube(place.clone(), Material.GRASS, 6, 6, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.GRASS, 6, 1, 6);
 		place.setZ(place.getZ() + 3);
 		place.setX(place.getX() + 4);
 		place.getBlock().setType(Material.AIR);

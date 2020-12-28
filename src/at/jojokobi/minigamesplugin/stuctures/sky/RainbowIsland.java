@@ -26,15 +26,15 @@ public class RainbowIsland extends GameStructureBase {
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 3, 3, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 3, 1, 3);
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 5, 5, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.DIRT, 5, 1, 5);
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() - 1);
 		place.setZ(place.getZ() - 1);
-		BasicGenUtil.generateCube(place.clone(), Material.WHITE_WOOL, 7, 7, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.WHITE_WOOL, 7, 1, 7);
 
 		int startX = (int) place.getX();
 		int startZ = (int) place.getZ();
@@ -47,7 +47,7 @@ public class RainbowIsland extends GameStructureBase {
 		}
 		place.setX(place.getX() - 4);
 		place.setZ(place.getZ() - 4);
-		BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, 3, 3, 1);
+		BasicGenUtil.generateCube(place.clone(), Material.GRASS_BLOCK, 3, 1, 3);
 		place.setY(place.getY() + 1);
 		place.setX(place.getX() + 1);
 		place.setZ(place.getZ() + 1);
