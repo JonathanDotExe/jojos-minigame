@@ -10,8 +10,8 @@ import at.jojokobi.minigamesplugin.stuctures.GameStructureBase;
 
 public class SandIsland extends GameStructureBase {
 
-	public SandIsland(int width, int length, int height) {
-		super(width, length, height);
+	public SandIsland() {
+		super(0, 0, 0); //TODO
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -30,7 +31,9 @@ import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
 import at.jojokobi.minigamesplugin.util.Area;
 
-public class SkySiegePlugin extends BaseMinigame{
+public class SkySiegeMinigame extends BaseMinigame{
+	
+	public static final int ISLAND_GRID_STEP = 16;
 
 	private int gameDuration = 30 * 60 * 20;
 	private int maxPlayers = 10;
@@ -39,7 +42,7 @@ public class SkySiegePlugin extends BaseMinigame{
 	private GlobalScore<Integer> timerScore;
 
 	
-	public SkySiegePlugin(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
+	public SkySiegeMinigame(MapGenerator generator, MapGenerator lobbyGenerator, Area gameArea) {
 		super(generator, lobbyGenerator, gameArea);
 	}
 	
@@ -108,6 +111,16 @@ public class SkySiegePlugin extends BaseMinigame{
 		//Score
 		timerScore = new GlobalScore<>(0, "Time: ");
 		scoreboard.addScore(timerScore);
+	}
+	
+	@Override
+	protected void spreadPlayers (List<Player> players, Area gameArea) {
+		Random random = new Random();
+		for (Player player : players) {
+			Location loc = gameArea.getPos().clone().add(random.nextInt((int) gameArea.getWidth()/ISLAND_GRID_STEP) * ISLAND_GRID_STEP, gameArea.getPos().getWorld().getMaxHeight() - gameArea.getPos().getY(), random.nextInt((int) gameArea.getLength()/ISLAND_GRID_STEP) * ISLAND_GRID_STEP);
+			loc.setY(loc.getWorld().getHighestBlockYAt(loc));
+			player.teleport(player);
+		}
 	}
 	
 	@EventHandler

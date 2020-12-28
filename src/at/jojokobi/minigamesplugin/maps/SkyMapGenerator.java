@@ -1,15 +1,22 @@
 package at.jojokobi.minigamesplugin.maps;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import at.jojokobi.mcutil.generation.BasicGenUtil;
-import at.jojokobi.mcutil.generation.population.OreModifier;
-import at.jojokobi.minigamesplugin.stuctures.cave.CaveStructure;
+import at.jojokobi.minigamesplugin.minigames.SkySiegeMinigame;
+import at.jojokobi.minigamesplugin.stuctures.GameStructure;
+import at.jojokobi.minigamesplugin.stuctures.sky.ClassicIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.FarmIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.JungleIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.MineIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.NetherIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.RainbowIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.SandIsland;
+import at.jojokobi.minigamesplugin.stuctures.sky.SwampIsland;
 import at.jojokobi.minigamesplugin.util.Area;
 
 public class SkyMapGenerator implements MapGenerator {
@@ -29,26 +36,17 @@ public class SkyMapGenerator implements MapGenerator {
 		MapGenerator.clear(area, task);
 		
 		// Landscape
-		for (int x = 0; x < area.getWidth(); x += 16) {
-			for (int z = 0; z < area.getLength(); z += 16) {
+		List<GameStructure> strucs = Arrays.asList(new ClassicIsland(), new FarmIsland(), new JungleIsland(), new MineIsland(), new NetherIsland(), new RainbowIsland(), new SandIsland(), new SwampIsland());
+		for (int x = 0; x < area.getWidth(); x += SkySiegeMinigame.ISLAND_GRID_STEP) {
+			for (int z = 0; z < area.getLength(); z += SkySiegeMinigame.ISLAND_GRID_STEP) {
 				int xPos = x;
 				int zPos = z;
 				task.add(() -> {
-					int width = (int) Math.min(16, area.getWidth() - xPos);
-					int length = (int) Math.min(16, area.getLength() - zPos);
-					Location place = area.getPos().clone().add(xPos, 0, zPos);
-					BasicGenUtil.generateCube(place.clone(), Material.STONE, new OreModifier(random.nextLong()), width, 32, length);
-					place.add(0, 32, 0);
+					GameStructure struc = strucs.get(random.nextInt(strucs.size()));
+					struc.generate(area.getPos().add(xPos, 60, zPos), random);
 				});
 			}
 		}
-		
-		//Cave
-		task.add(() -> {
-			CaveStructure cave = new CaveStructure((int) area.getWidth(), (int) area.getLength());
-			cave.generate(area.getPos().clone().add(0, 8, 0), random);
-		});
-		
 		//Clear world
 		task.add(() -> {
 			for (Entity entity : area.getPos().getWorld().getEntities()) {

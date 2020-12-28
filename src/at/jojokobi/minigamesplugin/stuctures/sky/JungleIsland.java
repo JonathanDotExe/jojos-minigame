@@ -12,8 +12,8 @@ import at.jojokobi.minigamesplugin.stuctures.GameStructureBase;
 
 public class JungleIsland extends GameStructureBase {
 
-	public JungleIsland(int width, int length, int height) {
-		super(width, length, height);
+	public JungleIsland() {
+		super(0, 0, 0); //TODO
 	}
 
 	@Override

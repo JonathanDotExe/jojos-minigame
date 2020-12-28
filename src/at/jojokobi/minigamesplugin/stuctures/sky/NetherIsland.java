@@ -11,8 +11,8 @@ import at.jojokobi.minigamesplugin.stuctures.GameStructureBase;
 
 public class NetherIsland extends GameStructureBase {
 
-	public NetherIsland(int width, int length, int height) {
-		super(width, length, height);
+	public NetherIsland() {
+		super(0, 0, 0); //TODO
 	}
 
 	@Override

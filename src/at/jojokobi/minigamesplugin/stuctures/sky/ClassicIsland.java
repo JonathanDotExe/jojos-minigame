@@ -11,8 +11,8 @@ import at.jojokobi.minigamesplugin.stuctures.GameStructureBase;
 
 public class ClassicIsland extends GameStructureBase {
 
-	public ClassicIsland(int width, int length, int height) {
-		super(width, length, height);
+	public ClassicIsland() {
+		super(0, 0, 0); //TODO
 	}
 
 	@Override

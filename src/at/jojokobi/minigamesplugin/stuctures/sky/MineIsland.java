@@ -12,8 +12,8 @@ import at.jojokobi.minigamesplugin.stuctures.GameStructureBase;
 
 public class MineIsland extends GameStructureBase {
 
-	public MineIsland(int width, int length, int height) {
-		super(width, length, height);
+	public MineIsland() {
+		super(0, 0, 0); //TODO
 	}
 
 	@Override
