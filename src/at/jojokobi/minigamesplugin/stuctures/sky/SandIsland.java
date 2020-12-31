@@ -17,9 +17,6 @@ public class SandIsland extends GameStructureBase {
 	@Override
 	public void generate(Location loc, Random random) {
 		Location place = loc.clone();
-		place.setY(place.getY() + 16);
-		place.setX(place.getX() + 16);
-		place.setZ(place.getZ() + 16);
 		place.setY(place.getY() - 1);
 		BasicGenUtil.generateCube(place.clone(), Material.SANDSTONE, 3, 1, 3);
 		place.setY(place.getY() + 1);

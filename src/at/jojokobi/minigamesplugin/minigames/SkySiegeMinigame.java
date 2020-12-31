@@ -29,7 +29,6 @@ import at.jojokobi.minigamesplugin.items.WitherSkullGunComponent;
 import at.jojokobi.minigamesplugin.kits.PlayerKit;
 import at.jojokobi.minigamesplugin.maps.MapGenerator;
 import at.jojokobi.minigamesplugin.minigames.components.ClimbComponent;
-import at.jojokobi.minigamesplugin.minigames.components.StrengthComponent;
 import at.jojokobi.minigamesplugin.scoreboard.CustomScoreboard;
 import at.jojokobi.minigamesplugin.scoreboard.GlobalScore;
 import at.jojokobi.minigamesplugin.util.Area;
@@ -98,7 +97,6 @@ public class SkySiegeMinigame extends BaseMinigame{
 		addComponent(new CocoaComponent());
 		
 		addComponent(new ClimbComponent());
-		addComponent(new StrengthComponent());
 		super.init(plugin);
 	}
 	
@@ -157,6 +155,7 @@ public class SkySiegeMinigame extends BaseMinigame{
 		for (Player player : players) {
 			Location loc = gameArea.getPos().clone().add(random.nextInt((int) gameArea.getWidth()/ISLAND_GRID_STEP) * ISLAND_GRID_STEP, 0, random.nextInt((int) gameArea.getLength()/ISLAND_GRID_STEP) * ISLAND_GRID_STEP);
 			loc.setY(loc.getWorld().getHighestBlockYAt(loc) + 1);
+			player.setVelocity(new org.bukkit.util.Vector());
 			player.teleport(loc);
 		}
 	}
@@ -218,7 +217,6 @@ public class SkySiegeMinigame extends BaseMinigame{
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		//let player die when they fall down
-		//TODO sideeffects in the future maybe
 		if (!isRunning()) {
 			Location to = event.getTo();
 			if (to.getY() < 0){
