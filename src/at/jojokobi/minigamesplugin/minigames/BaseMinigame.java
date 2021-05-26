@@ -1,6 +1,7 @@
 package at.jojokobi.minigamesplugin.minigames;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -194,10 +195,12 @@ public abstract class BaseMinigame implements Minigame {
 	}
 	
 	protected void assignTeams (List<Player> players, CustomScoreboard board, Scoreboard scoreboardView) {
+		List<Player> p = new ArrayList<Player>(players);
+		Collections.shuffle(p);
 		List<CustomTeam> teams = board.getTeamList();
 		if (teams.size() > 0) {
 			Iterator<CustomTeam> iter = teams.iterator();
-			for (Player player: players) {
+			for (Player player : p) {
 				board.setTeam(player, iter.next(), scoreboardView);
 				if (!iter.hasNext()) {
 					iter = teams.iterator();
