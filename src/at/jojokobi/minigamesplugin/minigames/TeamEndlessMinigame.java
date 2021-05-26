@@ -147,7 +147,7 @@ public class TeamEndlessMinigame extends BaseMinigame{
 				Player player = (Player) event.getEntity();
 				if (player.getHealth() - event.getFinalDamage() <= 0.5) {
 					//Lose Points
-					int newScore = Math.max(0, playerScore.get(player) - Math.max(playerScore.get(player)/2, 50));
+					int newScore = Math.max(0, playerScore.get(player) - 75);
 					playerScore.set(newScore, player);
 					sendGameMessage(player.getName() + " was killed!");
 					event.setDamage(0);
