@@ -41,7 +41,7 @@ import at.jojokobi.minigamesplugin.util.Area;
 
 public class TeamEndlessMinigame extends BaseMinigame{
 
-	private int gameDuration = 30 * 60 * 20;
+	private int gameDuration = 10 * 60 * 20;
 	private int maxPlayers = 8;
 	private int maxWaitTime = 20 * 20;
 	private int protectionTime = 3 * 60 * 20;
