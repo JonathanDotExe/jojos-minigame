@@ -23,7 +23,7 @@ public abstract class DamageEventComponent implements GameComponent {
 		if (event.getDamager().getWorld() == world && event.getEntity() instanceof Player) {
 			Player player = StaticUtils.getDamagingPlayer(event);
 			if (player != null && player != event.getEntity()) {
-				onDamage(player, (Player) event, event.getDamage());
+				onDamage(player, (Player) event.getEntity(), event.getDamage());
 			}
 		}
 	}

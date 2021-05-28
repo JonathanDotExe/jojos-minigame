@@ -41,7 +41,7 @@ import at.jojokobi.minigamesplugin.util.Area;
 
 public class TeamEndlessMinigame extends BaseMinigame{
 
-	private int gameDuration = 10 * 60 * 20;
+	private int gameDuration = 15 * 60 * 20;
 	private int maxPlayers = 8;
 	private int maxWaitTime = 20 * 20;
 	private int protectionTime = 3 * 60 * 20;
@@ -147,11 +147,14 @@ public class TeamEndlessMinigame extends BaseMinigame{
 				Player player = (Player) event.getEntity();
 				if (player.getHealth() - event.getFinalDamage() <= 0.5) {
 					//Lose Points
-					int newScore = Math.max(0, playerScore.get(player) - 75);
+					int newScore = Math.max(0, playerScore.get(player) - 150);
 					playerScore.set(newScore, player);
 					sendGameMessage(player.getName() + " was killed!");
 					event.setDamage(0);
 					player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+					Location loc = getGameArea().getPos().clone().add(Math.random() * getGameArea().getWidth(), 0, Math.random() * getGameArea().getLength());
+					loc.setY(loc.getWorld().getHighestBlockYAt(loc));
+					player.teleport(loc);
 				}
 			}
 		}
@@ -172,9 +175,22 @@ public class TeamEndlessMinigame extends BaseMinigame{
 
 	@Override
 	public Winner determineWinner() {
-		List<Player> players = getScoreboard().getOnlinePlayers();
-		players.sort((p1, p2) -> Integer.compare(playerScore.get(p2), playerScore.get(p1)));
-		return players.isEmpty() ? null : new PlayerWinner(players.get(0), getScoreboard().getTeam(players.get(0)).getColor());
+		List<CustomTeam> teams = getScoreboard().getTeamList();
+		teams.sort((p1, p2) -> {
+			int points1 = 0;
+			for (Player player : getScoreboard().getOnlinePlayersInTeam(p1)) {
+				points1 += playerScore.get(player);
+			}
+			
+			int points2 = 0;
+			for (Player player : getScoreboard().getOnlinePlayersInTeam(p2)) {
+				points2 += playerScore.get(player);
+			}
+			
+			return Integer.compare(points2, points1);
+			
+		});
+		return teams.isEmpty() ? null : new TeamWinner(teams.get(0));
 	}
 
 	@Override
